@@ -10,6 +10,13 @@ public class SpawnManager : MonoBehaviour {
   public List<Transform> checkpoints = new List<Transform>();
   public bool isDebug = false;
 
+  void Awake() {
+    instance = this;
+    Transform[] children = GetComponentsInChildren<Transform>();
+    checkpoints.AddRange(children);
+    checkpoints.RemoveAt(0);
+  }
+
   void OnEnable() {
     DebugManager.DebugMode += _DebugMode;
   }
@@ -18,15 +25,7 @@ public class SpawnManager : MonoBehaviour {
     DebugManager.DebugMode -= _DebugMode;
   }
 
-  void Awake() {
-    instance = this;
-  }
-
   void Start() {
-    checkpoints = new List<Transform>();
-    Transform[] children = GetComponentsInChildren<Transform>();
-    checkpoints.AddRange(children);
-    checkpoints.RemoveAt(0);
     CreateCharacter(0);
   }
 
