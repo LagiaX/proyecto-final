@@ -5,6 +5,8 @@ public class AppConfig : MonoBehaviour {
   public static Vector3 titleAnimationFrom = new Vector3(0, -350, 0);
   public static Vector3 titleAnimationTo = new Vector3(0, -120, 0);
 
+  public static readonly string SceneTraining = "Testing Grounds";
+
   public static string ActionWalkUP = "WalkUp";
   public static string ActionWalkDOWN = "WalkDown";
   public static string ActionWalkLEFT = "WalkLeft";

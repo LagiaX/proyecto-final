@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerSystems : MonoBehaviour {
   public static PlayerSystems instance;
+
   public delegate void IsReady();
   public static event IsReady Ready;
 
@@ -24,5 +25,9 @@ public class PlayerSystems : MonoBehaviour {
 
   void Start() {
     Ready?.Invoke();
+    SavefileManager sm = FindAnyObjectByType<SavefileManager>();
+    if (sm != null) {
+      sm.player = this;
+    }
   }
 }

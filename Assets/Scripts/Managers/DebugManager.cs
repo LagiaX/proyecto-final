@@ -2,6 +2,8 @@
 using UnityEngine;
 
 public class DebugManager : MonoBehaviour {
+  public static DebugManager instance;
+
   public delegate void Activate(bool option);
   public static event Activate DebugMode;
 
@@ -11,6 +13,14 @@ public class DebugManager : MonoBehaviour {
 
   private float _fpsCumulative;
   private float _timer;
+
+  void Awake() {
+    if (instance == null) {
+      instance = this;
+      return;
+    }
+    Destroy(gameObject);
+  }
 
   void Start() {
     DebugMode += DisplayFPS;

@@ -2,8 +2,8 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SaveManager : MonoBehaviour {
-  public static SaveManager instance;
+public class SavefileManager : MonoBehaviour {
+  public static SavefileManager instance;
 
   public SaveFile savefile;
   public PlayerSystems player;
@@ -13,12 +13,12 @@ public class SaveManager : MonoBehaviour {
 
   void OnEnable() {
     DebugManager.DebugMode += _DebugMode;
-    PlayerSystems.Ready += _AssignPlayerSystems;
+    //PlayerSystems.Ready += _AssignPlayerSystems;
   }
 
   void OnDisable() {
     DebugManager.DebugMode -= _DebugMode;
-    PlayerSystems.Ready -= _AssignPlayerSystems;
+    //PlayerSystems.Ready -= _AssignPlayerSystems;
   }
 
   void Awake() {
@@ -40,15 +40,16 @@ public class SaveManager : MonoBehaviour {
     isDebug = option;
   }
 
-  private void _AssignPlayerSystems() {
-    player = PlayerSystems.instance;
-  }
+  // For the future would be cool to have this functionality
+  //private void _AssignPlayerSystems() {
+  //  player = PlayerSystems.instance;
+  //}
 
   private void _Controls() {
-    if (Input.GetKeyDown(KeyCode.P)) {
+    if (Input.GetKeyDown(KeyCode.C)) {
       SaveGame();
     }
-    if (Input.GetKeyDown(KeyCode.O)) {
+    if (Input.GetKeyDown(KeyCode.V)) {
       LoadGame();
     }
   }

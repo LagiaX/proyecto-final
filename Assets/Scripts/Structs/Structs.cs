@@ -142,16 +142,21 @@ public enum ProyectileType {
   Pellets
 }
 
+// SAVEFILE & CONFIG
+
+[Serializable]
 public struct SaveFile {
   public Systems systems;
   public Player player;
 }
 
+[Serializable]
 public struct Systems {
   public int scene;
   public int savePoint;
 }
 
+[Serializable]
 public struct Player {
   public Profile profile;
   public CharacterStats stats;
@@ -160,6 +165,19 @@ public struct Player {
   public Vector3 rotation;
 }
 
+[Serializable]
 public struct Profile {
   public string name;
+}
+
+[Serializable]
+public struct SavedConfig {
+  public SoundSettings soundSettings;
+}
+
+[Serializable]
+public struct SoundSettings {
+  public float bgmVolume;
+  public float sfxVolume;
+  public AudioSpeakerMode speakerMode;
 }

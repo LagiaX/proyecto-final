@@ -1,19 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TitleScreenMenu : MonoBehaviour {
 
   public void OnNewGame() {
-    SceneManager.LoadScene("Level_1");
+    GameManager.ChangeScene(1);
   }
 
   public void OnLoad() { }
 
+  public void OnTraining() {
+    GameManager.ChangeScene(AppConfig.SceneTraining);
+  }
+
   public void OnOptions() { }
 
   public void OnExitGame() {
-    Application.Quit();
+    GameManager.Exit();
   }
 }

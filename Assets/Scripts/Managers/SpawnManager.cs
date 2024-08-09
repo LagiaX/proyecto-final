@@ -1,20 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class SpawnManager : MonoBehaviour {
   public static SpawnManager instance;
+
   public GameObject player; // player prefab
   public List<Transform> checkpoints = new List<Transform>();
   public bool isDebug = false;
 
   void Awake() {
-    instance = this;
-    Transform[] children = GetComponentsInChildren<Transform>();
-    checkpoints.AddRange(children);
-    checkpoints.RemoveAt(0);
+    if (instance == null) {
+      instance = this;
+      Transform[] children = GetComponentsInChildren<Transform>();
+      checkpoints.AddRange(children);
+      checkpoints.RemoveAt(0);
+      return;
+    }
+    Destroy(gameObject);
   }
 
   void OnEnable() {
@@ -48,6 +50,7 @@ public class SpawnManager : MonoBehaviour {
 
   public void CreateCharacter(int id) {
     player = Instantiate(player);
+    player.name = "Player";
     MoveToPoint(Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints));
   }
 
