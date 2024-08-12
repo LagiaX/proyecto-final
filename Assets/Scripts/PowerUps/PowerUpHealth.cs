@@ -11,7 +11,7 @@ public class PowerUpHealth : PowerUp {
         collector.OnDamage(recovery);
         return;
       }
-      playerStats.health.ModifyMissingHealth(-recovery);
+      playerStats.health.RestoreHealth(recovery);
     }
   }
 }

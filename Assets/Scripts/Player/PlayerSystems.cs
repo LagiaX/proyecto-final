@@ -8,6 +8,7 @@ public class PlayerSystems : MonoBehaviour {
 
   public PlayerStats stats;
   public PlayerActions actions;
+  public PlayerMovement movement;
   public PlayerInventory inventory;
   public PlayerRay ray;
 
@@ -16,6 +17,7 @@ public class PlayerSystems : MonoBehaviour {
       instance = this;
       stats = GetComponent<PlayerStats>();
       actions = GetComponent<PlayerActions>();
+      movement = GetComponent<PlayerMovement>();
       inventory = GetComponent<PlayerInventory>();
       ray = GetComponent<PlayerRay>();
       return;

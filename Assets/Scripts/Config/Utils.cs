@@ -6,7 +6,7 @@ using UnityEngine;
 public static class Utils {
 
   public static CharacterStats GetCharacterBaseStats() {
-    return new CharacterStats("character", 5, 1f, 20);
+    return new CharacterStats("character", 8, 1f, 15);
   }
 
   public static Health GetCharacterBaseHealth() {

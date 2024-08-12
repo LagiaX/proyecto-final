@@ -1,0 +1,27 @@
+{
+    "systems": {
+        "scene": 1,
+        "savePoint": 0
+    },
+    "player": {
+        "profile": {
+            "name": "Player(Clone)"
+        },
+        "stats": {
+            "name": "character",
+            "movementSpeedBase": 5,
+            "movementSpeedModifier": 1.0,
+            "movementSpeedMax": 20
+        },
+        "position": {
+            "x": 1.1127910614013672,
+            "y": 1.5,
+            "z": -34.33122253417969
+        },
+        "rotation": {
+            "x": -3.2016512818699996e-7,
+            "y": 180.00442504882813,
+            "z": 1.439412061765566e-10
+        }
+    }
+}

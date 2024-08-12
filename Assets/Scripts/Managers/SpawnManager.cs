@@ -59,9 +59,8 @@ public class SpawnManager : MonoBehaviour {
   }
 
   public void Respawn() {
-    if (player.TryGetComponent(out PlayerActions controls)) {
-      controls.enabled = true;
-    }
+    PlayerSystems.instance.stats.InitializeStats();
+    PlayerSystems.instance.actions.enabled = true;
     Transform closestCheckpoint = Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints);
     MoveToPoint(closestCheckpoint);
   }

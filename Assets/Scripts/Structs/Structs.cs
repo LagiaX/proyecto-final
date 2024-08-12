@@ -19,8 +19,12 @@ public struct Health {
     this.healthMissing = healthMissing;
   }
 
-  public void ModifyMissingHealth(int value) {
-    healthMissing = Mathf.Clamp(healthMissing + value, 0, healthMax);
+  public void RestoreHealth(int value) {
+    healthMissing = Mathf.Clamp(healthMissing - Mathf.Abs(value), 0, healthMax);
+  }
+
+  public void LoseHealth(int value) {
+    healthMissing = Mathf.Clamp(healthMissing + Mathf.Abs(value), 0, healthMax);
   }
 
   public bool IsAlive() {
@@ -35,6 +39,11 @@ public struct Durability {
   }
 }
 
+public enum Ailment {
+  Poisoned,
+  Burned
+}
+
 [Serializable]
 public struct CharacterStats {
   public string name;
@@ -46,7 +55,7 @@ public struct CharacterStats {
     }
   }
   public int movementSpeedMax;
-  const float movementSpeedModMax = 2.8f;
+  const float movementSpeedModMax = 2.2f;
 
   public CharacterStats(string name, int movementSpeed, float movementSpeedModifier, int movementSpeedMax) {
     this.name = name;

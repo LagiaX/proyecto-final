@@ -8,9 +8,9 @@ public abstract class AliveTarget : Target, IDamageable {
   public int showDamagedF = 5;
   public Health health;
 
-  private Material material;
-  private Color color;
-  private int _damagedFCount;
+  protected Material material;
+  protected Color color;
+  protected int _damagedFCount;
 
   void Awake() {
     if (!TryGetComponent(out Renderer r)) {
@@ -44,7 +44,13 @@ public abstract class AliveTarget : Target, IDamageable {
   public virtual void OnDamage(int damage) {
     _damagedFCount = showDamagedF;
     material.color = color * 1.5f;
-    health.ModifyMissingHealth(damage);
+    health.LoseHealth(damage);
+    if (!health.IsAlive())
+      OnDeath();
+  }
+
+  public virtual void OnPoisonDamage(int damage) {
+    health.LoseHealth(damage);
     if (!health.IsAlive())
       OnDeath();
   }
