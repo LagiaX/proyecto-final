@@ -5,13 +5,13 @@ public class PowerUp : Item {
   public bool destroyOnCollect;
 
   public void OnTriggerEnter(Collider other) {
-    if (other.TryGetComponent(out AliveTarget collector)) {
+    if (other.TryGetComponent(out OrganicTarget collector)) {
       OnCollect(collector);
     }
   }
 
-  public override void OnCollect(AliveTarget collector) {
+  public override void OnCollect(OrganicTarget collector) {
     if (destroyOnCollect)
-      Destroy(gameObject);
+      Remove();
   }
 }

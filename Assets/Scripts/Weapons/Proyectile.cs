@@ -5,7 +5,7 @@ public class Proyectile : MonoBehaviour, IShootable {
   public float speed;
   public float weaponRange;
   public bool isFired = true;
-  //private new Collider collider;
+
   private float totalTravelDistance = 0;
 
   void Update() {
@@ -20,7 +20,8 @@ public class Proyectile : MonoBehaviour, IShootable {
   }
 
   private void _CheckLimit() {
-    if (totalTravelDistance >= weaponRange) Destroy(gameObject);
+    if (totalTravelDistance >= weaponRange)
+      Remove();
   }
 
   public void OnShoot(float delay) {
@@ -39,6 +40,11 @@ public class Proyectile : MonoBehaviour, IShootable {
     if (target != null) {
       target.OnDamage(power);
     }
-    Destroy(gameObject);
+    // SFX for impact (?)
+    Remove();
+  }
+
+  public async void Remove() {
+    await GarbageManager.RemoveInTime(gameObject, 1f);
   }
 }

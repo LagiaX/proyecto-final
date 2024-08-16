@@ -20,8 +20,6 @@ public class PlayerActions : MonoBehaviour {
   public List<Transform> enemiesInRange = new List<Transform>();
   public List<Transform> targetsInRange = new List<Transform>();
 
-  private PlayerStats _playerStats;
-  private PlayerInventory _playerInventory;
   private Rigidbody _rigidbody;
   private float _moveSpeedFinal;
 
@@ -43,12 +41,6 @@ public class PlayerActions : MonoBehaviour {
     if (!TryGetComponent(out _rigidbody)) {
       Utils.MissingComponent(typeof(Rigidbody).Name, this.GetType().Name);
     }
-    if (!TryGetComponent(out _playerStats)) {
-      Utils.MissingComponent(typeof(PlayerStats).Name, this.GetType().Name);
-    }
-    if (!TryGetComponent(out _playerInventory)) {
-      Utils.MissingComponent(typeof(PlayerInventory).Name, this.GetType().Name);
-    }
     if (weaponSlot.transform.childCount > 0) {
       for (int i = 0; i < weaponSlot.transform.childCount; i++) {
         GameObject g = weaponSlot.transform.GetChild(i).gameObject;
@@ -62,11 +54,11 @@ public class PlayerActions : MonoBehaviour {
   }
 
   void Start() {
-    
+
   }
 
   private void _CalculateMovementSpeed() {
-    _moveSpeedFinal = _playerStats.stats.movementSpeed * moveSpeedMod;
+    _moveSpeedFinal = PlayerSystems.instance.stats.stats.movementSpeed * moveSpeedMod;
   }
 
   private void _CalculateMoveDirection(float x, float z) {
@@ -93,7 +85,6 @@ public class PlayerActions : MonoBehaviour {
   }
 
   public void Move(float x, float z) {
-    if (this == null) return;
     _CalculateMoveDirection(x, z);
     _ChangeFaceDirection();
     _CalculateMovementSpeed();
@@ -108,7 +99,6 @@ public class PlayerActions : MonoBehaviour {
   }
 
   public void Shoot() {
-    // TODO: This should be in the inventory. Have a pointer to the inventory and access it when needed.
     weaponPrefab?.OnAttack();
   }
 
@@ -124,13 +114,16 @@ public class PlayerActions : MonoBehaviour {
     }
   }
 
-  public void AddEnemyInRange(AliveTarget at) {
-    enemiesInRange.Add(at.transform);
-    AliveTarget.Dead += RemoveEnemyOutOfRange;
+  public void AddEnemyInRange(OrganicTarget ot) {
+    enemiesInRange.Add(ot.transform);
+    OrganicTarget.Dead += RemoveEnemyOutOfRange;
   }
 
-  public void RemoveEnemyOutOfRange(AliveTarget at) {
-    enemiesInRange.Remove(at.transform);
+  public void RemoveEnemyOutOfRange(OrganicTarget ot) {
+    if (ot.transform == target) {
+      target = null;
+    }
+    enemiesInRange.Remove(ot.transform);
   }
 
   public void AddTargetInRange(Target t) {

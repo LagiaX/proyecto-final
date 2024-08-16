@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,10 +8,21 @@ public class GameManager : MonoBehaviour {
 
   void Awake() {
     if (instance == null) {
+      OrganicTarget.Dead += DeadHandler;
       instance = this;
       return;
     }
     Destroy(gameObject);
+  }
+
+  public async void DeadHandler(OrganicTarget t) {
+    t.enabled = false;
+    if (t.TryGetComponent(out PlayerSystems player)) {
+      Utils.DelayFor(() => SpawnManager.instance.Respawn(), TimeSpan.FromSeconds(2f));
+    }
+    else if (t.TryGetComponent(out EnemyStats stats)) {
+      await GarbageManager.RemoveInTime(t.gameObject, 2f);
+    }
   }
 
   public static async Task ChangeSceneAsync(int id) {

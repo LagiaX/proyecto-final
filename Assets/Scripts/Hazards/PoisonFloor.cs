@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PoisonFloor : MonoBehaviour {
 
-  public void OnCollisionEnter(Collision other) {
-    if (other.gameObject.TryGetComponent(out PlayerSystems player)) {
-      player.stats.OnNewAilment(Ailment.Poisoned, Mathf.Infinity);
-    }
-  }
+  public int frameDelay = 10;
 
-  public void OnCollisionExit(Collision other) {
-    if (other.gameObject.TryGetComponent(out PlayerSystems player)) {
-      player.stats.OnNewAilment(Ailment.Poisoned, 3f);
+  private int _frameCounter = 0;
+
+  public void OnTriggerStay(Collider other) {
+    if (_frameCounter == 0) {
+      _frameCounter = frameDelay;
+      if (other.TryGetComponent(out PlayerSystems player)) {
+        player.stats.OnNewAilment(Ailment.Poisoned, 6f);
+      }
+    }
+    else {
+      _frameCounter--;
     }
   }
 }

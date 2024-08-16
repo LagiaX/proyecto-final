@@ -1,7 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : AliveTarget {
-  
+public class EnemyStats : OrganicTarget {
+  public StatsNpc stats;
+  public EnemyType enemyType;
+
+  protected override void Start() {
+    base.Start();
+    InitStats();
+  }
+
+  public void InitStats() {
+    health = Utils.GetNPCBaseHealth(enemyType);
+    stats = Utils.GetNPCBaseStats();
+  }
 }

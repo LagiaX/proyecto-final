@@ -39,13 +39,8 @@ public struct Durability {
   }
 }
 
-public enum Ailment {
-  Poisoned,
-  Burned
-}
-
 [Serializable]
-public struct CharacterStats {
+public struct StatsPlayer {
   public string name;
   public int movementSpeedBase;
   public float movementSpeedModifier;
@@ -57,7 +52,7 @@ public struct CharacterStats {
   public int movementSpeedMax;
   const float movementSpeedModMax = 2.2f;
 
-  public CharacterStats(string name, int movementSpeed, float movementSpeedModifier, int movementSpeedMax) {
+  public StatsPlayer(string name, int movementSpeed, float movementSpeedModifier, int movementSpeedMax) {
     this.name = name;
     this.movementSpeedBase = movementSpeed;
     this.movementSpeedModifier = movementSpeedModifier;
@@ -69,7 +64,7 @@ public struct CharacterStats {
   }
 }
 
-public struct NonPlayableCharacterStats {
+public struct StatsNpc {
   public string name;
   public int attack;
   public int attackMax;
@@ -77,7 +72,7 @@ public struct NonPlayableCharacterStats {
   public int movementSpeed;
   public int movementSpeedMax;
 
-  public NonPlayableCharacterStats(string name, int attack, int attackMax, int actionSpeed, int actionSpeedMax, int movementSpeed, int movementSpeedMax) {
+  public StatsNpc(string name, int attack, int attackMax, int actionSpeed, int actionSpeedMax, int movementSpeed, int movementSpeedMax) {
     this.name = name;
     this.attack = attack;
     this.attackMax = attackMax;
@@ -138,19 +133,6 @@ public struct ShotgunStats {
   public const bool instantFire = true;
 }
 
-public enum WeaponType {
-  Gun,
-  Crossbow,
-  Shotgun,
-  Unarmed
-}
-
-public enum ProyectileType {
-  Bullet,
-  Bolt,
-  Pellets
-}
-
 // SAVEFILE & CONFIG
 
 [Serializable]
@@ -168,7 +150,7 @@ public struct Systems {
 [Serializable]
 public struct Player {
   public Profile profile;
-  public CharacterStats stats;
+  public StatsPlayer stats;
   public Inventory inventory;
   public Vector3 position;
   public Vector3 rotation;

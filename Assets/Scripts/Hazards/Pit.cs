@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Pit : MonoBehaviour {
@@ -37,8 +36,9 @@ public class Pit : MonoBehaviour {
       // play sound FX for fall
       float sfxDuration = 3f;
       Utils.DelayFor(() => {
-        player.stats.OnDamage(3);
+        // TODO: Check the case in which the player died by poison mid-fall
         if (player.stats.health.IsAlive()) {
+          player.stats.OnDamage(AppConfig.pitDamage);
           _RepositionPlayer(player.transform);
         }
       }, TimeSpan.FromSeconds(sfxDuration));

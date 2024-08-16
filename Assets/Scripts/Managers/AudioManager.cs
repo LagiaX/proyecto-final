@@ -2,7 +2,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class AudioManager : MonoBehaviour {
 
@@ -38,8 +37,8 @@ public class AudioManager : MonoBehaviour {
 
   public void LoadConfig() {
     if (!File.Exists(configRoute)) {
-      // TODO: Default config
-      print("No settings file D=");
+      sliderBGM.value = AppConfig.defaultBGMVol;
+      sliderSFX.value = AppConfig.defaultSFXVol;
       return;
     }
 

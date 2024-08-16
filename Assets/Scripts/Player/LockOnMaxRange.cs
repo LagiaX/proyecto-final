@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LockOnMaxRange : MonoBehaviour {
@@ -20,9 +18,8 @@ public class LockOnMaxRange : MonoBehaviour {
   void OnTriggerExit(Collider other) {
     ITargetable t;
     if (other.gameObject.TryGetComponent(out t) && (t as Target).transform == player.target) {
-      print("OUT OF MAX RANGED LOCKING ON");
       if (t.GetType() == typeof(EnemyStats)) {
-        player.RemoveEnemyOutOfRange((AliveTarget)t);
+        player.RemoveEnemyOutOfRange((OrganicTarget)t);
         player.ToggleLockOn();
         return;
       }

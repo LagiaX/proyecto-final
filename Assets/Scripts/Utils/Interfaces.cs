@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public interface ICollectable {
-  public void OnCollect(AliveTarget collector);
+  public void OnCollect(OrganicTarget collector);
 }
 
 public interface IDamageable {

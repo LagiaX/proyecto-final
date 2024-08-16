@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour {
@@ -22,7 +21,9 @@ public class PlayerInventory : MonoBehaviour {
       case WeaponType.Gun:
         //weaponSlot.transform.Find("Crossbow_Equipment").gameObject.SetActive(false);
         //weaponSlot.transform.Find("Shotgun_Equipment").gameObject.SetActive(false);
-        weaponSlot.transform.Find("Gun_Equipment").gameObject.SetActive(true);
+        RangedWeapon r = weaponSlot.transform.Find("Gun_Equipment").gameObject.GetComponent<RangedWeapon>();
+        r.gameObject.SetActive(true);
+        PlayerSystems.instance.actions.weaponPrefab = r;
         break;
       case WeaponType.Crossbow:
         weaponSlot.transform.Find("Gun_Equipment").gameObject.SetActive(false);

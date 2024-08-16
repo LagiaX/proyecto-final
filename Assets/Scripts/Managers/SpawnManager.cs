@@ -28,7 +28,7 @@ public class SpawnManager : MonoBehaviour {
   }
 
   void Start() {
-    CreateCharacter(0);
+    Spawn(0);
   }
 
   void Update() {
@@ -47,21 +47,22 @@ public class SpawnManager : MonoBehaviour {
         r.enabled = option;
     }
   }
-
-  public void CreateCharacter(int id) {
-    player = Instantiate(player);
-    player.name = "Player";
-    MoveToPoint(Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints));
-  }
-
-  public void MoveToPoint(Transform checkpoint) {
+  private void _MoveToPoint(Transform checkpoint) {
     player.transform.position = checkpoint.position;
   }
 
+  public void Spawn(int id) {
+    player = Instantiate(player);
+    player.name = "Player";
+    _MoveToPoint(Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints));
+  }
+
   public void Respawn() {
-    PlayerSystems.instance.stats.InitializeStats();
+    PlayerSystems.instance.stats.enabled = true;
+    PlayerSystems.instance.stats.InitStats();
+    PlayerSystems.instance.stats.InitStatusAilments();
     PlayerSystems.instance.actions.enabled = true;
     Transform closestCheckpoint = Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints);
-    MoveToPoint(closestCheckpoint);
+    _MoveToPoint(closestCheckpoint);
   }
 }

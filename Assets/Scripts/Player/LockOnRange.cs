@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LockOnRange : MonoBehaviour {
@@ -18,10 +16,9 @@ public class LockOnRange : MonoBehaviour {
   }
 
   void OnTriggerEnter(Collider other) {
-    ITargetable t;
-    if (other.gameObject.TryGetComponent(out t) && (Target)t != player.target) {
+    if (other.gameObject.TryGetComponent(out ITargetable t) && (Target)t != player.target) {
       if (t.GetType() == typeof(EnemyStats)) {
-        player.AddEnemyInRange((AliveTarget)t);
+        player.AddEnemyInRange((OrganicTarget)t);
         return;
       }
       player.AddTargetInRange((Target)t);
@@ -32,7 +29,7 @@ public class LockOnRange : MonoBehaviour {
     ITargetable t;
     if (other.gameObject.TryGetComponent(out t) && (Target)t != player.target) {
       if (t.GetType() == typeof(EnemyStats)) {
-        player.RemoveEnemyOutOfRange((AliveTarget)t);
+        player.RemoveEnemyOutOfRange((OrganicTarget)t);
         return;
       }
       player.RemoveTargetOutOfRange((Target)t);

@@ -6,16 +6,15 @@ public class Coin : Item {
   public int value = 1;
 
   public void OnTriggerEnter(Collider other) {
-    if (other.TryGetComponent(out AliveTarget collector)) {
+    if (other.TryGetComponent(out OrganicTarget collector)) {
       OnCollect(collector);
     }
   }
 
-  public override void OnCollect(AliveTarget collector) {
+  public override void OnCollect(OrganicTarget collector) {
     if (collector.TryGetComponent(out PlayerInventory inventory)) {
       inventory.AddCoinValue(value);
-      print("Total coins: " + inventory.inventory.coins);
-      Destroy(gameObject);
+      Remove();
     }
   }
 }

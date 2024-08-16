@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpikesFloor : MonoBehaviour {
@@ -22,12 +20,9 @@ public class SpikesFloor : MonoBehaviour {
 
   public void OnCollisionEnter(Collision other) {
     if (other.gameObject.TryGetComponent(out PlayerSystems player)) {
-      player.stats.OnDamage(4);
       if (player.stats.health.IsAlive()) {
+        player.stats.OnDamage(AppConfig.spikesDamage);
         player.movement.rigidbody.velocity += Vector3.up * bounceSpeed;
-      }
-      else {
-        // death animation for spikes
       }
     }
   }

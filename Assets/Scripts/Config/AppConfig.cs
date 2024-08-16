@@ -7,6 +7,9 @@ public class AppConfig : MonoBehaviour {
 
   public static readonly string SceneTraining = "Testing Grounds";
 
+  public static readonly float defaultBGMVol = 0.5f;
+  public static readonly float defaultSFXVol = 0.5f;
+
   public static string ActionWalkUP = "WalkUp";
   public static string ActionWalkDOWN = "WalkDown";
   public static string ActionWalkLEFT = "WalkLeft";
@@ -22,4 +25,10 @@ public class AppConfig : MonoBehaviour {
     {ActionShoot, KeyCode.I},
     {ActionLockOn, KeyCode.O},
   };
+
+  public static readonly int poisonDamage = 1;
+  public static readonly float poisonTickRate = 2f;
+  public static readonly int pitDamage = 3;
+  public static readonly int spikesDamage = 4;
+
 }
