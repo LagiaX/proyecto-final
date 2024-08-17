@@ -6,7 +6,7 @@ public class CameraFollowingPlayer : MonoBehaviour {
   public bool stopFollowing;
 
   void Awake() {
-    OrganicTarget.Alive += _FindPlayer;
+    PlayerStats.PlayerAlive += _FindPlayer;
   }
 
   void Start() {
@@ -17,10 +17,12 @@ public class CameraFollowingPlayer : MonoBehaviour {
     _UpdateCamera();
   }
 
-  private void _FindPlayer(OrganicTarget t) {
-    if (t.gameObject.GetComponent<PlayerStats>() != null) {
-      player = t.transform;
+  private void _FindPlayer(PlayerStats ps) {
+    if (ps != null) {
+      player = ps.transform;
+      return;
     }
+    Debug.Log("Missing player position reference");
   }
 
   private void _UpdateCamera() {

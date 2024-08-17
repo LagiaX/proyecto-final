@@ -106,6 +106,7 @@
     <Compile Include="Assets\Scripts\Collectables\Coin.cs" />
     <Compile Include="Assets\Scripts\Player\LockOnMaxRange.cs" />
     <Compile Include="Assets\Scripts\Cross\Target.cs" />
+    <Compile Include="Assets\Scripts\UI\HeadUpDisplay.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpHealth.cs" />
     <Compile Include="Assets\Scripts\Config\AppConfig.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpSpeed.cs" />
@@ -1311,6 +1312,10 @@
     </Reference>
     <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Formats.Alembic.Runtime">

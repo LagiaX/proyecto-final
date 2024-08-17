@@ -2,6 +2,11 @@ using UnityEngine;
 using System;
 
 public class PlayerStats : OrganicTarget {
+  public delegate void IsPlayerAlive(PlayerStats ps);
+  public static event IsPlayerAlive PlayerAlive;
+
+  public delegate void OnHeal(int healing);
+  public static event OnHeal PlayerHeal;
 
   public StatsPlayer stats;
   public bool[] ailments;
@@ -9,9 +14,9 @@ public class PlayerStats : OrganicTarget {
   public float poisonTickTimer = AppConfig.poisonTickRate;
 
   protected override void Start() {
-    base.Start();
     InitStats();
     InitStatusAilments();
+    PlayerAlive.Invoke(this);
   }
 
   protected override void Update() {
@@ -54,6 +59,11 @@ public class PlayerStats : OrganicTarget {
 
   public override void OnDamage(int damage) {
     base.OnDamage(damage);
+  }
+
+  public void OnRestoreHealth(int healing) {
+    health.RestoreHealth(healing);
+    PlayerHeal.Invoke(healing);
   }
 
   public void OnNewAilment(Ailment a, float duration) {

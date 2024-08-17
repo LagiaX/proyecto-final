@@ -5,7 +5,6 @@ public class EnemyStats : OrganicTarget {
   public EnemyType enemyType;
 
   protected override void Start() {
-    base.Start();
     InitStats();
   }
 

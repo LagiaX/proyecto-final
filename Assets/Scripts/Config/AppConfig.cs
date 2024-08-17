@@ -10,6 +10,8 @@ public class AppConfig : MonoBehaviour {
   public static readonly float defaultBGMVol = 0.5f;
   public static readonly float defaultSFXVol = 0.5f;
 
+  public static readonly int spaceBetweenHeartIcons = 20; // in pixels
+
   public static string ActionWalkUP = "WalkUp";
   public static string ActionWalkDOWN = "WalkDown";
   public static string ActionWalkLEFT = "WalkLeft";

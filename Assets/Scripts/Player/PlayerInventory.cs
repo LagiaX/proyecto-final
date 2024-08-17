@@ -40,6 +40,7 @@ public class PlayerInventory : MonoBehaviour {
 
   public void AddCoinValue(int value) {
     inventory.coins = (inventory.coins + value) % Inventory.COINS_MAX;
+    HeadUpDisplay.instance.ModifyCoins(inventory.coins);
   }
 
   public void AddWeapon(WeaponType type) {
