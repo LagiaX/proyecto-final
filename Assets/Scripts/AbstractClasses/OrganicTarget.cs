@@ -24,7 +24,7 @@ public abstract class OrganicTarget : Target, IDamageable {
   }
 
   protected virtual void Start() {
-    Alive.Invoke(this);
+    Alive?.Invoke(this);
   }
 
   protected virtual void Update() {
@@ -39,13 +39,17 @@ public abstract class OrganicTarget : Target, IDamageable {
   }
 
   public virtual void OnDamage(int damage) {
-    _ChangeColorForATime();
-    health.LoseHealth(damage);
+    if (health.IsAlive()) {
+      _ChangeColorForATime();
+      health.LoseHealth(damage);
+    }
   }
 
   public virtual void OnPoisonDamage(int damage) {
-    // activate VFX for poison
-    health.LoseHealth(damage);
+    if (health.IsAlive()) {
+      // activate VFX for poison
+      health.LoseHealth(damage);
+    }
   }
 
   public virtual void OnDeath() {

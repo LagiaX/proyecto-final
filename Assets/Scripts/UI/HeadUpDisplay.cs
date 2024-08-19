@@ -18,7 +18,9 @@ public class HeadUpDisplay : MonoBehaviour {
     if (instance == null) {
       instance = this;
       PlayerStats.PlayerAlive += InitHealth;
-      PlayerStats.PlayerHeal += PlayerHeal;
+      SpawnManager.PlayerRespawn += InitHealth;
+      PlayerStats.PlayerHealed += OnPlayerHeal;
+      PlayerStats.PlayerDamaged += OnPlayerDamage;
       return;
     }
     Destroy(gameObject);
@@ -62,8 +64,8 @@ public class HeadUpDisplay : MonoBehaviour {
     coins.text = string.Format("{0:" + adjustment + "}", value);
   }
 
-  public void PlayerHeal(int healing) {
-    // Could be nice to have this for a recovery-over-time effect
+  public void OnPlayerHeal(int healing) {
+    // Could be nice to have this for a recovery-over-time effect. This could even be parameterized for use on DOTs, too.
     //float totalHealing = healing;
     //while (totalHealing > 0) {
     //  if (heartIcons[_currentHeartIcon].fillAmount < 1) {
@@ -78,5 +80,11 @@ public class HeadUpDisplay : MonoBehaviour {
     );
   }
 
-  public void PlayerDamage() { }
+  public void OnPlayerDamage(int damage) {
+    Debug.Log("PLAYER DMG HUD: " + damage);
+    _UpdateHealthIndicator(
+      PlayerSystems.instance.stats.health.healthCurrent / 4,
+      PlayerSystems.instance.stats.health.healthCurrent % 4
+    );
+  }
 }

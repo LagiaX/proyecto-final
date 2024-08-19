@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour {
+  public static AudioManager instance;
 
   public AudioMixer audioMixer;
   public Slider sliderBGM;
@@ -12,10 +13,18 @@ public class AudioManager : MonoBehaviour {
 
   public readonly string configRoute = Directory.GetCurrentDirectory() + "/golden.cfg";
 
+  void Awake() {
+    if (instance == null) {
+      instance = this;
+      return;
+    }
+    Destroy(gameObject);
+  }
+
   void Start() {
     sliderBGM.onValueChanged.AddListener((float value) => { SetBGM(value); });
     sliderSFX.onValueChanged.AddListener((float value) => { SetSFX(value); });
-    LoadConfig();    
+    LoadConfig();
   }
 
   public void SetBGM(float value) {

@@ -2,6 +2,15 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 public class GarbageManager : MonoBehaviour {
+  public static GarbageManager instance;
+
+  void Awake() {
+    if (instance == null) {
+      instance = this;
+      return;
+    }
+    Destroy(gameObject);
+  }
 
   public static async Task RemoveInTime(GameObject g, float time) {
     _Clean(g);

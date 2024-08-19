@@ -4,6 +4,11 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour {
   public static SpawnManager instance;
 
+  public delegate void OnSpawn(PlayerStats ps);
+  public static event OnSpawn PlayerSpawn;
+  public delegate void OnRespawn(PlayerStats ps);
+  public static event OnRespawn PlayerRespawn;
+
   public GameObject player; // player prefab
   public List<Transform> checkpoints = new List<Transform>();
   public bool isDebug = false;
@@ -55,6 +60,7 @@ public class SpawnManager : MonoBehaviour {
     player = Instantiate(player);
     player.name = "Player";
     _MoveToPoint(Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints));
+    PlayerSpawn?.Invoke(PlayerSystems.instance.stats);
   }
 
   public void Respawn() {
@@ -64,5 +70,6 @@ public class SpawnManager : MonoBehaviour {
     PlayerSystems.instance.actions.enabled = true;
     Transform closestCheckpoint = Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints);
     _MoveToPoint(closestCheckpoint);
+    PlayerRespawn?.Invoke(PlayerSystems.instance.stats);
   }
 }

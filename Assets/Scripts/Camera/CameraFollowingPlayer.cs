@@ -1,16 +1,21 @@
 using UnityEngine;
 
 public class CameraFollowingPlayer : MonoBehaviour {
+  public static CameraFollowingPlayer instance;
+
   public Transform player;
   public Vector3 offset = new Vector3(0, 4, -4);
   public bool stopFollowing;
 
   void Awake() {
-    PlayerStats.PlayerAlive += _FindPlayer;
-  }
-
-  void Start() {
-    StartFollowing();
+    if (instance == null) {
+      instance = this;
+      SpawnManager.PlayerSpawn += _FindPlayer;
+      SpawnManager.PlayerRespawn += OnPlayerRespawn;
+      PlayerStats.PlayerDead += OnPlayerDead;
+      return;
+    }
+    Destroy(gameObject);
   }
 
   void LateUpdate() {
@@ -20,6 +25,7 @@ public class CameraFollowingPlayer : MonoBehaviour {
   private void _FindPlayer(PlayerStats ps) {
     if (ps != null) {
       player = ps.transform;
+      StartFollowing();
       return;
     }
     Debug.Log("Missing player position reference");
@@ -27,8 +33,6 @@ public class CameraFollowingPlayer : MonoBehaviour {
 
   private void _UpdateCamera() {
     if (player == null || stopFollowing) return;
-    // TODO: Change -2 for value depending on the level height
-    //if (player.position.y < -2) return;
     transform.position = player.position + offset;
     transform.LookAt(player);
   }
@@ -36,4 +40,12 @@ public class CameraFollowingPlayer : MonoBehaviour {
   public void StartFollowing() { stopFollowing = false; }
 
   public void StopFollowing() { stopFollowing = true; }
+
+  public void OnPlayerRespawn(PlayerStats ps) {
+    StartFollowing();
+  }
+
+  public void OnPlayerDead(OrganicTarget ot) {
+    StopFollowing();
+  }
 }

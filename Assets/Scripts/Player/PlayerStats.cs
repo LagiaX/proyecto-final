@@ -4,9 +4,13 @@ using System;
 public class PlayerStats : OrganicTarget {
   public delegate void IsPlayerAlive(PlayerStats ps);
   public static event IsPlayerAlive PlayerAlive;
+  public delegate void IsPlayerDead(PlayerStats ps);
+  public static event IsPlayerDead PlayerDead;
 
-  public delegate void OnHeal(int healing);
-  public static event OnHeal PlayerHeal;
+  public delegate void isPlayerHealed(int healing);
+  public static event isPlayerHealed PlayerHealed;
+  public delegate void isPlayerDamaged(int healing);
+  public static event isPlayerDamaged PlayerDamaged;
 
   public StatsPlayer stats;
   public bool[] ailments;
@@ -16,11 +20,14 @@ public class PlayerStats : OrganicTarget {
   protected override void Start() {
     InitStats();
     InitStatusAilments();
-    PlayerAlive.Invoke(this);
+    PlayerAlive?.Invoke(this);
   }
 
   protected override void Update() {
-    base.Update();
+    if (!health.IsAlive()) {
+      OnDeath();
+      return;
+    }
     if (ailments[(int)Ailment.Poisoned]) {
       ApplyPoisonDamage();
     }
@@ -59,11 +66,12 @@ public class PlayerStats : OrganicTarget {
 
   public override void OnDamage(int damage) {
     base.OnDamage(damage);
+    PlayerDamaged?.Invoke(damage);
   }
 
   public void OnRestoreHealth(int healing) {
     health.RestoreHealth(healing);
-    PlayerHeal.Invoke(healing);
+    PlayerHealed?.Invoke(healing);
   }
 
   public void OnNewAilment(Ailment a, float duration) {
@@ -81,6 +89,6 @@ public class PlayerStats : OrganicTarget {
       controls.enabled = false;
     }
     // play death animation
-    base.OnDeath();
+    PlayerDead?.Invoke(this);
   }
 }
