@@ -5,10 +5,10 @@ public class LockOnRange : MonoBehaviour {
   public Collider sphereRange;
 
   void Awake() {
-    if (!transform.parent.TryGetComponent(out player))
-      Utils.MissingComponent(typeof(PlayerActions).Name, this.GetType().Name);
+    if (!(player = PlayerSystems.instance.actions))
+      Utils.MissingComponent(typeof(PlayerActions).Name, PlayerSystems.instance.name);
     if (!TryGetComponent(out sphereRange))
-      Utils.MissingComponent(typeof(Collider).Name, this.GetType().Name);
+      Utils.MissingComponent(typeof(Collider).Name, name);
   }
 
   void Start() {

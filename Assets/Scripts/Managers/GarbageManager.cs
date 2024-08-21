@@ -38,6 +38,11 @@ public class GarbageManager : MonoBehaviour {
   }
 
   private static void _Remove(GameObject g) {
-    Destroy(g);
+    if (Application.isPlaying) {
+      Destroy(g);
+    }
+    else {
+      DestroyImmediate(g);
+    }
   }
 }

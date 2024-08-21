@@ -6,6 +6,10 @@ public class PlayerSystems : MonoBehaviour {
   public delegate void IsReady();
   public static event IsReady Ready;
 
+  public GameObject player;
+  public GameObject weaponSlot;
+
+  [Header("Systems")]
   public PlayerStats stats;
   public PlayerActions actions;
   public PlayerMovement movement;
@@ -15,6 +19,12 @@ public class PlayerSystems : MonoBehaviour {
   void Awake() {
     if (instance == null) {
       instance = this;
+      if (player == null) {
+        player = transform.Find("PlayerModel").gameObject;
+      }
+      if (weaponSlot == null) {
+        weaponSlot = transform.Find("WeaponSlot").gameObject;
+      }
       stats = GetComponent<PlayerStats>();
       actions = GetComponent<PlayerActions>();
       movement = GetComponent<PlayerMovement>();

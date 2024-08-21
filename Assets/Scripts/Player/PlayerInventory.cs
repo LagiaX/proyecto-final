@@ -3,12 +3,7 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour {
 
   public Inventory inventory;
-  public GameObject weaponSlot;
   protected int _weaponsIndex = -1;
-
-  public void Awake() {
-    weaponSlot = transform.Find("WeaponSlot").gameObject;
-  }
 
   public void Start() {
     // TODO: Initialize with savefile contents
@@ -16,7 +11,8 @@ public class PlayerInventory : MonoBehaviour {
   }
 
   private void _HideShowWeapons(WeaponType activeWeapon) {
-    print(activeWeapon);
+    Debug.Log(activeWeapon);
+    GameObject weaponSlot = PlayerSystems.instance.weaponSlot;
     switch (activeWeapon) {
       case WeaponType.Gun:
         //weaponSlot.transform.Find("Crossbow_Equipment").gameObject.SetActive(false);

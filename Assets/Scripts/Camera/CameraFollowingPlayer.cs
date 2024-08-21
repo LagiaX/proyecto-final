@@ -13,6 +13,8 @@ public class CameraFollowingPlayer : MonoBehaviour {
       SpawnManager.PlayerSpawn += _FindPlayer;
       SpawnManager.PlayerRespawn += OnPlayerRespawn;
       PlayerStats.PlayerDead += OnPlayerDead;
+      Pit.PlayerFall += OnPlayerFall;
+      Pit.PlayerReposition += OnPlayerReposition;
       return;
     }
     Destroy(gameObject);
@@ -41,11 +43,11 @@ public class CameraFollowingPlayer : MonoBehaviour {
 
   public void StopFollowing() { stopFollowing = true; }
 
-  public void OnPlayerRespawn(PlayerStats ps) {
-    StartFollowing();
-  }
+  public void OnPlayerRespawn(PlayerStats ps) { StartFollowing(); }
 
-  public void OnPlayerDead(OrganicTarget ot) {
-    StopFollowing();
-  }
+  public void OnPlayerDead(OrganicTarget ot) { StopFollowing(); }
+
+  public void OnPlayerFall() { StopFollowing(); }
+
+  public void OnPlayerReposition(Vector3 pos) { StartFollowing(); }
 }

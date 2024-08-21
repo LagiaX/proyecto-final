@@ -10,7 +10,6 @@ public class PlayerActions : MonoBehaviour {
   public float jumpDistance;
 
   [Header("Weapon")]
-  public GameObject weaponSlot;
   public Weapon weaponPrefab;
 
   [Header("Locked target")]
@@ -41,9 +40,9 @@ public class PlayerActions : MonoBehaviour {
     if (!TryGetComponent(out _rigidbody)) {
       Utils.MissingComponent(typeof(Rigidbody).Name, this.GetType().Name);
     }
-    if (weaponSlot.transform.childCount > 0) {
-      for (int i = 0; i < weaponSlot.transform.childCount; i++) {
-        GameObject g = weaponSlot.transform.GetChild(i).gameObject;
+    if (PlayerSystems.instance.weaponSlot.transform.childCount > 0) {
+      for (int i = 0; i < PlayerSystems.instance.weaponSlot.transform.childCount; i++) {
+        GameObject g = PlayerSystems.instance.weaponSlot.transform.GetChild(i).gameObject;
         if (g.activeInHierarchy) {
           weaponPrefab = g.GetComponent<RangedWeapon>();
         }
@@ -51,10 +50,6 @@ public class PlayerActions : MonoBehaviour {
     }
     // TODO: proper platformer jump and remove this
     Physics.gravity = new Vector3(0, -30, 0);
-  }
-
-  void Start() {
-
   }
 
   private void _CalculateMovementSpeed() {

@@ -12,6 +12,13 @@ public enum EnemyType {
   Mechanical
 }
 
+public enum SpawnType {
+  Player,
+  Enemy,
+  Item,
+  Object
+}
+
 public enum ProyectileType {
   Bullet,
   Bolt,

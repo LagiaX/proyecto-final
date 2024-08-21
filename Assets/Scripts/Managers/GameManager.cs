@@ -8,21 +8,21 @@ public class GameManager : MonoBehaviour {
 
   void Awake() {
     if (instance == null) {
-      OrganicTarget.Dead += DeadHandler;
+      OrganicTarget.Dead += OnNpcDeath;
+      PlayerStats.PlayerDead += OnPlayerDead;
       instance = this;
       return;
     }
     Destroy(gameObject);
   }
 
-  public async void DeadHandler(OrganicTarget t) {
-    t.enabled = false;
-    if (t.TryGetComponent(out PlayerSystems player)) {
-      Utils.DelayFor(() => SpawnManager.instance.Respawn(), TimeSpan.FromSeconds(2f));
-    }
-    else if (t.TryGetComponent(out EnemyStats stats)) {
-      await GarbageManager.RemoveInTime(t.gameObject, 2f);
-    }
+  public void OnPlayerDead(PlayerStats ps) {
+    ps.enabled = false;
+    Utils.DelayFor(() => SpawnManager.instance.Respawn(), TimeSpan.FromSeconds(2f));
+  }
+
+  public async void OnNpcDeath(OrganicTarget ot) {
+    await GarbageManager.RemoveInTime(ot.gameObject, 2f);
   }
 
   public static async Task ChangeSceneAsync(int id) {

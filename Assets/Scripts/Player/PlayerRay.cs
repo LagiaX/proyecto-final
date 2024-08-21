@@ -16,7 +16,9 @@ public class PlayerRay : MonoBehaviour {
   private new Collider collider;
 
   private void Awake() {
-    collider = GetComponent<Collider>();
+    if (!PlayerSystems.instance.player.TryGetComponent(out collider)) {
+      Utils.MissingComponent(typeof(Collider).Name, PlayerSystems.instance.player.name);
+    }
   }
 
   void Start() {

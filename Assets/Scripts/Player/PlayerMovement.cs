@@ -7,8 +7,8 @@ public class PlayerMovement : MonoBehaviour {
   public new Rigidbody rigidbody;
 
   void Awake() {
-    if (!TryGetComponent(out rigidbody))
-      Utils.MissingComponent(typeof(Rigidbody).Name, this.GetType().Name);
+    if (!PlayerSystems.instance.player.TryGetComponent(out rigidbody))
+      Utils.MissingComponent(typeof(Rigidbody).Name, PlayerSystems.instance.player.name);
   }
 
   void Start() {

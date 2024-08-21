@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SpawnManager : MonoBehaviour {
   public static SpawnManager instance;
@@ -10,7 +11,9 @@ public class SpawnManager : MonoBehaviour {
   public static event OnRespawn PlayerRespawn;
 
   public GameObject player; // player prefab
+  public GameObject enemy; // enemy prefab
   public List<Transform> checkpoints = new List<Transform>();
+  public int startingPoint = 0;
   public bool isDebug = false;
 
   void Awake() {
@@ -33,7 +36,8 @@ public class SpawnManager : MonoBehaviour {
   }
 
   void Start() {
-    Spawn(0);
+    // TODO: This should be in GameManager
+    Spawn(SpawnType.Player, player, checkpoints[startingPoint].transform.position);
   }
 
   void Update() {
@@ -52,24 +56,34 @@ public class SpawnManager : MonoBehaviour {
         r.enabled = option;
     }
   }
-  private void _MoveToPoint(Transform checkpoint) {
-    player.transform.position = checkpoint.position;
-  }
 
-  public void Spawn(int id) {
-    player = Instantiate(player);
-    player.name = "Player";
-    _MoveToPoint(Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints));
-    PlayerSpawn?.Invoke(PlayerSystems.instance.stats);
+  public GameObject Spawn(SpawnType type, GameObject g, Vector3 position) {
+    GameObject instance = Instantiate(g, position, Quaternion.identity);
+    switch (type) {
+      case SpawnType.Player:
+        instance.name = AppConfig.playerName;
+        PlayerSpawn?.Invoke(PlayerSystems.instance.stats);
+        break;
+      case SpawnType.Enemy:
+        instance.name = "Enemy";
+        break;
+      case SpawnType.Item:
+        instance.name = "Item";
+        break;
+      case SpawnType.Object:
+        instance.name = "Object";
+        break;
+    }
+    return instance;
   }
 
   public void Respawn() {
-    PlayerSystems.instance.stats.enabled = true;
     PlayerSystems.instance.stats.InitStats();
     PlayerSystems.instance.stats.InitStatusAilments();
+    PlayerSystems.instance.stats.enabled = true;
     PlayerSystems.instance.actions.enabled = true;
     Transform closestCheckpoint = Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints);
-    _MoveToPoint(closestCheckpoint);
+    PlayerSystems.instance.transform.position = closestCheckpoint.position;
     PlayerRespawn?.Invoke(PlayerSystems.instance.stats);
   }
 }

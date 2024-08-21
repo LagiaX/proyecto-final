@@ -12,6 +12,8 @@ public class AppConfig : MonoBehaviour {
 
   public static readonly int spaceBetweenHeartIcons = 20; // in pixels
 
+  public static readonly string playerName = "Player";
+
   public static string ActionWalkUP = "WalkUp";
   public static string ActionWalkDOWN = "WalkDown";
   public static string ActionWalkLEFT = "WalkLeft";
