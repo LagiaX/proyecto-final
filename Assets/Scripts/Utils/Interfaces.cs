@@ -1,5 +1,9 @@
 using UnityEngine;
 
+public interface IActivatable {
+  public void OnActivate();
+}
+
 public interface ICollectable {
   public void OnCollect(OrganicTarget collector);
 }

@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\NPC\NpcStats.cs" />
     <Compile Include="Assets\Scripts\Utils\DontDestroyOnLoad.cs" />
+    <Compile Include="Assets\Scripts\Platforms\RemoteDoor.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpWeapon.cs" />
     <Compile Include="Assets\Scripts\Utils\Interfaces.cs" />
     <Compile Include="Assets\Scripts\Player\LockOnRange.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Assets\Scripts\Utils\Structs.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerActions.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Puzzles\MatchPattern.cs" />
     <Compile Include="Assets\Scripts\Utils\Enums.cs" />
     <Compile Include="Assets\Scripts\Cross\LevelPresentation.cs" />
     <Compile Include="Assets\Scripts\TitleScreen\Title.cs" />
@@ -84,7 +86,9 @@
     <Compile Include="Assets\Scripts\Weapons\RangedWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\GarbageManager.cs" />
     <Compile Include="Assets\Scripts\Utils\Utils.cs" />
+    <Compile Include="Assets\Scripts\Puzzles\ColorChanger.cs" />
     <Compile Include="Assets\Scripts\AbstractClasses\OrganicTarget.cs" />
+    <Compile Include="Assets\Scripts\Platforms\PlatformMovement.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Objects\InteractableObject.cs" />
     <Compile Include="Assets\Scripts\Weapons\Proyectile.cs" />
@@ -96,12 +100,14 @@
     <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
     <Compile Include="Assets\Scripts\Cross\AudioPlayer.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerRay.cs" />
+    <Compile Include="Assets\Scripts\Cross\ActivateObject.cs" />
     <Compile Include="Assets\Scripts\Hazards\SpikesFloor.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />
     <Compile Include="Assets\Scripts\TitleScreen\TitleScreenMenu.cs" />
     <Compile Include="Assets\Scripts\Hazards\PoisonFloor.cs" />
     <Compile Include="Assets\Scripts\NPC\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
+    <Compile Include="Assets\Scripts\Rooms\PuzzleRoom.cs" />
     <Compile Include="Assets\Scripts\TitleScreen\PressAnyButton.cs" />
     <Compile Include="Assets\Scripts\Collectables\Coin.cs" />
     <Compile Include="Assets\Scripts\Player\LockOnMaxRange.cs" />
@@ -110,6 +116,7 @@
     <Compile Include="Assets\Scripts\PowerUps\PowerUpHealth.cs" />
     <Compile Include="Assets\Scripts\Config\AppConfig.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpSpeed.cs" />
+    <Compile Include="Assets\Scripts\Rooms\EnemyRoom.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollowingPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
