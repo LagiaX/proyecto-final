@@ -26,7 +26,7 @@ public enum ProyectileType {
 }
 
 public enum WeaponType {
-  Gun,
+  Pistol,
   Crossbow,
   Shotgun,
   Unarmed

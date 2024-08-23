@@ -20,11 +20,11 @@ public class LockOnMaxRange : MonoBehaviour {
     if (other.gameObject.TryGetComponent(out t) && (t as Target).transform == player.target) {
       if (t.GetType() == typeof(EnemyStats)) {
         player.RemoveEnemyOutOfRange((OrganicTarget)t);
-        player.ToggleLockOn();
+        player.ToggleLock();
         return;
       }
       player.RemoveTargetOutOfRange((Target)t);
-      player.ToggleLockOn();
+      player.ToggleLock();
     }
   }
 }

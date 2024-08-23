@@ -4,13 +4,12 @@ public class Proyectile : MonoBehaviour, IShootable {
   public int power;
   public float speed;
   public float weaponRange;
-  public bool isFired = true;
 
+  protected bool isFired = false;
   private float totalTravelDistance = 0;
 
   void Update() {
-    if (isFired)
-      _Move();
+    if (isFired) _Move();
   }
 
   private void _Move() {

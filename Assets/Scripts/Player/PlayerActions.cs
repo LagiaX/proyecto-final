@@ -10,7 +10,7 @@ public class PlayerActions : MonoBehaviour {
   public float jumpDistance;
 
   [Header("Weapon")]
-  public Weapon weaponPrefab;
+  public Weapon weapon;
 
   [Header("Locked target")]
   public Transform target;
@@ -26,27 +26,23 @@ public class PlayerActions : MonoBehaviour {
     Controls.Move += Move;
     Controls.Jump += Jump;
     Controls.Shoot += Shoot;
-    Controls.LockOn += ToggleLockOn;
+    Controls.ChangeWeapon += ChangeWeapon;
+    Controls.LockOn += ToggleLock;
+    OrganicTarget.Dead += RemoveEnemyOutOfRange;
   }
 
   void OnDisable() {
     Controls.Move -= Move;
     Controls.Jump -= Jump;
     Controls.Shoot -= Shoot;
-    Controls.LockOn -= ToggleLockOn;
+    Controls.ChangeWeapon -= ChangeWeapon;
+    Controls.LockOn -= ToggleLock;
+    OrganicTarget.Dead -= RemoveEnemyOutOfRange;
   }
 
   void Awake() {
-    if (!TryGetComponent(out _rigidbody)) {
-      Utils.MissingComponent(typeof(Rigidbody).Name, this.GetType().Name);
-    }
-    if (PlayerSystems.instance.weaponSlot.transform.childCount > 0) {
-      for (int i = 0; i < PlayerSystems.instance.weaponSlot.transform.childCount; i++) {
-        GameObject g = PlayerSystems.instance.weaponSlot.transform.GetChild(i).gameObject;
-        if (g.activeInHierarchy) {
-          weaponPrefab = g.GetComponent<RangedWeapon>();
-        }
-      }
+    if (PlayerSystems.instance.movement.rigidbody != null) {
+      _rigidbody = PlayerSystems.instance.movement.rigidbody;
     }
     // TODO: proper platformer jump and remove this
     Physics.gravity = new Vector3(0, -30, 0);
@@ -94,10 +90,14 @@ public class PlayerActions : MonoBehaviour {
   }
 
   public void Shoot() {
-    weaponPrefab?.OnAttack();
+    weapon?.OnAttack();
   }
 
-  public void ToggleLockOn() {
+  public void ChangeWeapon() {
+    PlayerSystems.instance.inventory.ChangeWeapon();
+  }
+
+  public void ToggleLock() {
     if (target == null) {
       moveSpeedMod = 0.75f;
       _AssignTarget();
@@ -111,12 +111,11 @@ public class PlayerActions : MonoBehaviour {
 
   public void AddEnemyInRange(OrganicTarget ot) {
     enemiesInRange.Add(ot.transform);
-    OrganicTarget.Dead += RemoveEnemyOutOfRange;
   }
 
   public void RemoveEnemyOutOfRange(OrganicTarget ot) {
     if (ot.transform == target) {
-      target = null;
+      ToggleLock();
     }
     enemiesInRange.Remove(ot.transform);
   }

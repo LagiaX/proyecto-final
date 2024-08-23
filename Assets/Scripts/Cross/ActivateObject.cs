@@ -40,7 +40,9 @@ public class ActivateObject : MonoBehaviour {
       if (!gameobjects[i].TryGetComponent(out IActivatable a)) {
         Utils.MissingComponent(typeof(IActivatable).Name, gameobjects[i].name);
       }
-      a.OnActivate();
+      else {
+        a.OnActivate();
+      }
       await Task.Delay(10);
     }
   }

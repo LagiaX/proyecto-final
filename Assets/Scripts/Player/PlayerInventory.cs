@@ -3,35 +3,42 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour {
 
   public Inventory inventory;
-  protected int _weaponsIndex = -1;
 
-  public void Start() {
+  public RangedWeapon pistolPrefab;
+  public RangedWeapon crossbowPrefab;
+  public RangedWeapon shotgunPrefab;
+
+  protected int _weaponsIndex = 0;
+
+  void Start() {
     // TODO: Initialize with savefile contents
     inventory = new Inventory(0, new WeaponType[2] { WeaponType.Unarmed, WeaponType.Unarmed });
   }
 
   private void _HideShowWeapons(WeaponType activeWeapon) {
-    Debug.Log(activeWeapon);
-    GameObject weaponSlot = PlayerSystems.instance.weaponSlot;
+    RemoveWeapon();
+    RangedWeapon prefab = null;
     switch (activeWeapon) {
-      case WeaponType.Gun:
-        //weaponSlot.transform.Find("Crossbow_Equipment").gameObject.SetActive(false);
-        //weaponSlot.transform.Find("Shotgun_Equipment").gameObject.SetActive(false);
-        RangedWeapon r = weaponSlot.transform.Find("Gun_Equipment").gameObject.GetComponent<RangedWeapon>();
-        r.gameObject.SetActive(true);
-        PlayerSystems.instance.actions.weaponPrefab = r;
+      case WeaponType.Pistol:
+        prefab = pistolPrefab;
         break;
       case WeaponType.Crossbow:
-        weaponSlot.transform.Find("Gun_Equipment").gameObject.SetActive(false);
-        weaponSlot.transform.Find("Shotgun_Equipment").gameObject.SetActive(false);
-        weaponSlot.transform.Find("Crossbow_Equipment").gameObject.SetActive(true);
+        prefab = crossbowPrefab;
         break;
       case WeaponType.Shotgun:
-        weaponSlot.transform.Find("Gun_Equipment").gameObject.SetActive(false);
-        weaponSlot.transform.Find("Crossbow_Equipment").gameObject.SetActive(false);
-        weaponSlot.transform.Find("Shotgun_Equipment").gameObject.SetActive(true);
+        prefab = shotgunPrefab;
+        break;
+      default:
+        prefab = null;
         break;
     }
+    if (prefab != null) {
+      PlayerSystems.instance.actions.weapon = Instantiate(prefab, PlayerSystems.instance.weaponSlot.transform);
+    }
+  }
+
+  private int _NextIndexWrap() {
+    return (_weaponsIndex + 1) % inventory.weapons.Length;
   }
 
   public void AddCoinValue(int value) {
@@ -40,16 +47,29 @@ public class PlayerInventory : MonoBehaviour {
   }
 
   public void AddWeapon(WeaponType type) {
-    if (_weaponsIndex == -1) {
-      _weaponsIndex = 0;
+    if (inventory.weapons[_weaponsIndex] == WeaponType.Unarmed
+      || (inventory.weapons[_weaponsIndex] != WeaponType.Unarmed) && inventory.weapons[_NextIndexWrap()] != WeaponType.Unarmed) {
+      inventory.weapons[_weaponsIndex] = type;
+      _HideShowWeapons(type);
+      return;
     }
-    inventory.weapons[_weaponsIndex] = type;
-    _HideShowWeapons(type);
+
+    if (inventory.weapons[_NextIndexWrap()] == WeaponType.Unarmed) {
+      inventory.weapons[_NextIndexWrap()] = type;
+    }
+    else {
+      inventory.weapons[_weaponsIndex] = type;
+      _HideShowWeapons(type);
+    }
   }
 
-  public void SwitchWeapon() {
-    if (inventory.weapons.Length < 2) return;
+  public void ChangeWeapon() {
     _weaponsIndex = (_weaponsIndex + 1) % inventory.weapons.Length;
     _HideShowWeapons(inventory.weapons[_weaponsIndex]);
+  }
+
+  public async void RemoveWeapon() {
+    if (PlayerSystems.instance.actions.weapon != null)
+      await GarbageManager.RemoveInTime(PlayerSystems.instance.actions.weapon.gameObject, 1);
   }
 }

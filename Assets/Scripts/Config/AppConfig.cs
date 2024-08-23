@@ -14,20 +14,22 @@ public class AppConfig : MonoBehaviour {
 
   public static readonly string playerName = "Player";
 
-  public static string ActionWalkUP = "WalkUp";
-  public static string ActionWalkDOWN = "WalkDown";
-  public static string ActionWalkLEFT = "WalkLeft";
-  public static string ActionWalkRIGHT = "WalkRight";
-  public static string ActionMoveHorizontal = "Horizontal";
-  public static string ActionMoveVertical = "Vertical";
-  public static string ActionJump = "Jump";
-  public static string ActionShoot = "Shoot";
-  public static string ActionLockOn = "LockOn";
+  public static readonly string ActionWalkUP = "WalkUp";
+  public static readonly string ActionWalkDOWN = "WalkDown";
+  public static readonly string ActionWalkLEFT = "WalkLeft";
+  public static readonly string ActionWalkRIGHT = "WalkRight";
+  public static readonly string ActionMoveHorizontal = "Horizontal";
+  public static readonly string ActionMoveVertical = "Vertical";
+  public static readonly string ActionJump = "Jump";
+  public static readonly string ActionShoot = "Shoot";
+  public static readonly string ActionChangeWeapon = "ChangeWeapon";
+  public static readonly string ActionLockOn = "LockOn";
 
   public static Dictionary<string, KeyCode> keyBindings = new() {
     {ActionJump, KeyCode.Space},
     {ActionShoot, KeyCode.I},
     {ActionLockOn, KeyCode.O},
+    {ActionChangeWeapon, KeyCode.L},
   };
 
   public static readonly int poisonDamage = 1;

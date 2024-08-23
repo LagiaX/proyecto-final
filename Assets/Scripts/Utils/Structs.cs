@@ -106,22 +106,20 @@ public struct Inventory {
   }
 }
 
-public struct GunStats {
+public struct PistolStats {
   public const int power = 1;
-  public const float shootingRange = 10f;
+  public const float shootingRange = 15f;
   public const float shootingSpeed = 15f;
   public const float shootingMoveSpeed = 0.7f;
   public const float fireRate = 1f;
-  public const bool instantFire = true;
 }
 
 public struct CrossbowStats {
   public const int power = 3;
   public const float shootingRange = 8f;
-  public const float shootingSpeed = 18f;
+  public const float shootingSpeed = 20f;
   public const float shootingMoveSpeed = 0.9f;
   public const float fireRate = 1.5f;
-  public const bool instantFire = true;
 }
 
 public struct ShotgunStats {
@@ -130,7 +128,6 @@ public struct ShotgunStats {
   public const float shootingSpeed = 25f;
   public const float shootingMoveSpeed = 0.5f;
   public const float fireRate = 0.7f;
-  public const bool instantFire = true;
 }
 
 // SAVEFILE & CONFIG

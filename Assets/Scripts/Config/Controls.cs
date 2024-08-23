@@ -6,10 +6,12 @@ public class Controls : MonoBehaviour {
   public delegate void Movement(float h, float v);
   public delegate void ActionJump();
   public delegate void ActionShoot();
+  public delegate void ActionChangeWeapon();
   public delegate void ActionLockOn();
   public static event Movement Move;
   public static event ActionJump Jump;
   public static event ActionShoot Shoot;
+  public static event ActionChangeWeapon ChangeWeapon;
   public static event ActionLockOn LockOn;
 
   void Update() {
@@ -25,8 +27,11 @@ public class Controls : MonoBehaviour {
       Jump?.Invoke();
     if (Input.GetKeyDown(AppConfig.keyBindings[AppConfig.ActionShoot]))
       Shoot?.Invoke();
+    if (Input.GetKeyDown(AppConfig.keyBindings[AppConfig.ActionChangeWeapon]))
+      ChangeWeapon?.Invoke();
     if (Input.GetKeyDown(AppConfig.keyBindings[AppConfig.ActionLockOn]))
       LockOn?.Invoke();
+    // TODO: This should pause the game
     if (Input.GetKeyDown(KeyCode.Escape))
       Application.Quit();
   }
