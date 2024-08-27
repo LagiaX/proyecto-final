@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Controls : MonoBehaviour {
@@ -13,26 +11,38 @@ public class Controls : MonoBehaviour {
   public static event ActionShoot Shoot;
   public static event ActionChangeWeapon ChangeWeapon;
   public static event ActionLockOn LockOn;
+  public static event GameManager.PauseGame Pause;
 
   void Update() {
     _DetectInputs();
   }
 
   private void _DetectInputs() {
+    if (!GameManager.isPaused) {
+      _GameplayInputs();
+    }
+    else {
+      _MenuInputs();
+    }
+    if (Input.GetKeyDown(KeyCode.Escape)) {
+      Pause?.Invoke(!GameManager.isPaused);
+    }
+  }
+
+  private void _GameplayInputs() {
     float controlHorizontal = Input.GetAxisRaw(AppConfig.ActionMoveHorizontal);
     float controlVertical = Input.GetAxisRaw(AppConfig.ActionMoveVertical);
     if (controlHorizontal != 0 || controlVertical != 0)
       Move?.Invoke(controlHorizontal, controlVertical);
-    if (Input.GetKeyDown(AppConfig.keyBindings[AppConfig.ActionJump]))
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionJump]))
       Jump?.Invoke();
-    if (Input.GetKeyDown(AppConfig.keyBindings[AppConfig.ActionShoot]))
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionShoot]))
       Shoot?.Invoke();
-    if (Input.GetKeyDown(AppConfig.keyBindings[AppConfig.ActionChangeWeapon]))
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionChangeWeapon]))
       ChangeWeapon?.Invoke();
-    if (Input.GetKeyDown(AppConfig.keyBindings[AppConfig.ActionLockOn]))
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionLockOn]))
       LockOn?.Invoke();
-    // TODO: This should pause the game
-    if (Input.GetKeyDown(KeyCode.Escape))
-      Application.Quit();
   }
+
+  private void _MenuInputs() { }
 }

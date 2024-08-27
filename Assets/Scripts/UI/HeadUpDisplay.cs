@@ -47,7 +47,7 @@ public class HeadUpDisplay : MonoBehaviour {
 
   public void InitHealth(PlayerStats ps) {
     totalHearts = ps.health.healthMax / 4;
-    healthBG.sizeDelta = new Vector2(AppConfig.spaceBetweenHeartIcons * (totalHearts + 1) + totalHearts * 50, 100);
+    healthBG.sizeDelta = new Vector2(AppConfig.SpaceBetweenHeartIcons * (totalHearts + 1) + totalHearts * 50, 100);
     for (int i = 0; i < totalHearts; i++) {
       heartIcons[i].gameObject.SetActive(true);
       emptyHeartIcons[i].gameObject.SetActive(true);
@@ -73,7 +73,6 @@ public class HeadUpDisplay : MonoBehaviour {
     //    totalHealing -= 0.25f;
     //  }
     //}
-    Debug.Log("PLAYER HEAL HUD: " + healing);
     _UpdateHealthIndicator(
       PlayerSystems.instance.stats.health.healthCurrent / 4,
       PlayerSystems.instance.stats.health.healthCurrent % 4
@@ -81,7 +80,6 @@ public class HeadUpDisplay : MonoBehaviour {
   }
 
   public void OnPlayerDamage(int damage) {
-    Debug.Log("PLAYER DMG HUD: " + damage);
     _UpdateHealthIndicator(
       PlayerSystems.instance.stats.health.healthCurrent / 4,
       PlayerSystems.instance.stats.health.healthCurrent % 4

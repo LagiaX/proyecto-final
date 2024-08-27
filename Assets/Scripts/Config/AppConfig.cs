@@ -2,17 +2,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AppConfig : MonoBehaviour {
-  public static Vector3 titleAnimationFrom = new Vector3(0, -350, 0);
-  public static Vector3 titleAnimationTo = new Vector3(0, -120, 0);
+  // SCENES
+  public static readonly string TitleScreen = "Title_Screen";
+  public static readonly string[] Level = new string[]{ "Level_1" , "Level_2" };
+  public static readonly string SceneTraining = "Testing_Grounds";
 
-  public static readonly string SceneTraining = "Testing Grounds";
+  // OPTIONS
+  public static readonly float DefaultBGMVol = 0.5f;
+  public static readonly float DefaultSFXVol = 0.5f;
 
-  public static readonly float defaultBGMVol = 0.5f;
-  public static readonly float defaultSFXVol = 0.5f;
+  // HUD
+  public static readonly int SpaceBetweenHeartIcons = 20; // in pixels
 
-  public static readonly int spaceBetweenHeartIcons = 20; // in pixels
-
-  public static readonly string playerName = "Player";
+  // PLAYER ACTIONS
+  public static readonly string PlayerName = "Player";
 
   public static readonly string ActionWalkUP = "WalkUp";
   public static readonly string ActionWalkDOWN = "WalkDown";
@@ -25,16 +28,17 @@ public class AppConfig : MonoBehaviour {
   public static readonly string ActionChangeWeapon = "ChangeWeapon";
   public static readonly string ActionLockOn = "LockOn";
 
-  public static Dictionary<string, KeyCode> keyBindings = new() {
+  public static Dictionary<string, KeyCode> KeyBindings = new() {
     {ActionJump, KeyCode.Space},
     {ActionShoot, KeyCode.I},
     {ActionLockOn, KeyCode.O},
     {ActionChangeWeapon, KeyCode.L},
   };
 
-  public static readonly int poisonDamage = 1;
-  public static readonly float poisonTickRate = 2f;
-  public static readonly int pitDamage = 3;
-  public static readonly int spikesDamage = 4;
+  // DAMAGE VALUES
+  public static readonly int PoisonDamage = 1;
+  public static readonly float PoisonTickRate = 2f;
+  public static readonly int PitDamage = 3;
+  public static readonly int SpikesDamage = 4;
 
 }

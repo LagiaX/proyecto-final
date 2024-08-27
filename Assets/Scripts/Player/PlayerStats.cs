@@ -15,7 +15,7 @@ public class PlayerStats : OrganicTarget {
   public StatsPlayer stats;
   public bool[] ailments;
   public float[] ailmentDuration;
-  public float poisonTickTimer = AppConfig.poisonTickRate;
+  public float poisonTickTimer = AppConfig.PoisonTickRate;
 
   protected override void Start() {
     InitStats();
@@ -43,8 +43,8 @@ public class PlayerStats : OrganicTarget {
 
     if (poisonTickTimer <= 0) {
       // change to OnPoisonDamage when poison VFX is ready
-      OnDamage(AppConfig.poisonDamage);
-      poisonTickTimer = AppConfig.poisonTickRate;
+      OnDamage(AppConfig.PoisonDamage);
+      poisonTickTimer = AppConfig.PoisonTickRate;
     }
     poisonTickTimer -= Time.deltaTime;
     ailmentDuration[(int)Ailment.Poisoned] -= Time.deltaTime;

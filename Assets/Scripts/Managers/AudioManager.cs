@@ -46,8 +46,8 @@ public class AudioManager : MonoBehaviour {
 
   public void LoadConfig() {
     if (!File.Exists(configRoute)) {
-      sliderBGM.value = AppConfig.defaultBGMVol;
-      sliderSFX.value = AppConfig.defaultSFXVol;
+      sliderBGM.value = AppConfig.DefaultBGMVol;
+      sliderSFX.value = AppConfig.DefaultSFXVol;
       return;
     }
 

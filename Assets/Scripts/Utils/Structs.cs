@@ -140,7 +140,7 @@ public struct SaveFile {
 
 [Serializable]
 public struct Systems {
-  public int scene;
+  public string scene;
   public int savePoint;
 }
 

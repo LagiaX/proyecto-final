@@ -61,7 +61,7 @@ public class SpawnManager : MonoBehaviour {
     GameObject instance = Instantiate(g, position, Quaternion.identity);
     switch (type) {
       case SpawnType.Player:
-        instance.name = AppConfig.playerName;
+        instance.name = AppConfig.PlayerName;
         PlayerSpawn?.Invoke(PlayerSystems.instance.stats);
         break;
       case SpawnType.Enemy:

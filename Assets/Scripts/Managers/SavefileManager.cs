@@ -56,7 +56,7 @@ public class SavefileManager : MonoBehaviour {
 
   public void SaveGame() {
     print("Save game");
-    savefile.systems.scene = SceneManager.GetActiveScene().buildIndex;
+    savefile.systems.scene = SceneManager.GetActiveScene().name;
     // TODO: Savepoints
     // savefile.systems.savePoint = 
     savefile.player.position = player.transform.position;

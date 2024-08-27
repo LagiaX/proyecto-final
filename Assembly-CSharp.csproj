@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\NPC\NpcStats.cs" />
     <Compile Include="Assets\Scripts\Utils\DontDestroyOnLoad.cs" />
+    <Compile Include="Assets\Scripts\UI\TitleScreenMenu.cs" />
     <Compile Include="Assets\Scripts\Platforms\RemoteDoor.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpWeapon.cs" />
     <Compile Include="Assets\Scripts\Utils\Interfaces.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="Assets\Scripts\Puzzles\MatchPattern.cs" />
     <Compile Include="Assets\Scripts\Utils\Enums.cs" />
     <Compile Include="Assets\Scripts\Cross\LevelPresentation.cs" />
-    <Compile Include="Assets\Scripts\TitleScreen\Title.cs" />
     <Compile Include="Assets\Scripts\AbstractClasses\Item.cs" />
     <Compile Include="Assets\Scripts\AbstractClasses\Weapon.cs" />
     <Compile Include="Assets\Scripts\Objects\LiftableObject.cs" />
@@ -92,9 +92,10 @@
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Objects\InteractableObject.cs" />
     <Compile Include="Assets\Scripts\Weapons\Proyectile.cs" />
+    <Compile Include="Assets\Scripts\UI\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />
-    <Compile Include="Assets\Scripts\TitleScreen\OptionsMenu.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\UI\OptionsMenu.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSystems.cs" />
     <Compile Include="Assets\Scripts\Managers\SavefileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
@@ -103,12 +104,11 @@
     <Compile Include="Assets\Scripts\Cross\ActivateObject.cs" />
     <Compile Include="Assets\Scripts\Hazards\SpikesFloor.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />
-    <Compile Include="Assets\Scripts\TitleScreen\TitleScreenMenu.cs" />
     <Compile Include="Assets\Scripts\Hazards\PoisonFloor.cs" />
     <Compile Include="Assets\Scripts\NPC\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
+    <Compile Include="Assets\Scripts\Managers\UserInterfaceManager.cs" />
     <Compile Include="Assets\Scripts\Rooms\PuzzleRoom.cs" />
-    <Compile Include="Assets\Scripts\TitleScreen\PressAnyButton.cs" />
     <Compile Include="Assets\Scripts\Collectables\Coin.cs" />
     <Compile Include="Assets\Scripts\Player\LockOnMaxRange.cs" />
     <Compile Include="Assets\Scripts\Cross\Target.cs" />

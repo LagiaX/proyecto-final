@@ -21,7 +21,7 @@ public class SpikesFloor : MonoBehaviour {
   public void OnCollisionEnter(Collision other) {
     if (other.gameObject.TryGetComponent(out PlayerSystems player)) {
       if (player.stats.health.IsAlive()) {
-        player.stats.OnDamage(AppConfig.spikesDamage);
+        player.stats.OnDamage(AppConfig.SpikesDamage);
         player.movement.rigidbody.velocity += Vector3.up * bounceSpeed;
       }
     }

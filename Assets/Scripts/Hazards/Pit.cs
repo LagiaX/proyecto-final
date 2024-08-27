@@ -44,7 +44,7 @@ public class Pit : MonoBehaviour {
       float sfxDuration = 3f;
       Utils.DelayFor(() => {
         // TODO: Check the case in which the player died by poison mid-fall
-        player.stats.OnDamage(AppConfig.pitDamage);
+        player.stats.OnDamage(AppConfig.PitDamage);
         if (player.stats.health.IsAlive()) {
           _RepositionPlayer(player.transform);
         }
