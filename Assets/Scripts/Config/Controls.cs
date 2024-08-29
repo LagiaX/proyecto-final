@@ -5,12 +5,12 @@ public class Controls : MonoBehaviour {
   public delegate void ActionJump();
   public delegate void ActionShoot();
   public delegate void ActionChangeWeapon();
-  public delegate void ActionLockOn();
+  public delegate void ActionLockTarget();
   public static event Movement Move;
   public static event ActionJump Jump;
   public static event ActionShoot Shoot;
   public static event ActionChangeWeapon ChangeWeapon;
-  public static event ActionLockOn LockOn;
+  public static event ActionLockTarget LockTarget;
   public static event GameManager.PauseGame Pause;
 
   void Update() {
@@ -30,18 +30,18 @@ public class Controls : MonoBehaviour {
   }
 
   private void _GameplayInputs() {
-    float controlHorizontal = Input.GetAxisRaw(AppConfig.ActionMoveHorizontal);
-    float controlVertical = Input.GetAxisRaw(AppConfig.ActionMoveVertical);
+    float controlHorizontal = Input.GetAxisRaw("Horizontal");
+    float controlVertical = Input.GetAxisRaw("Vertical");
     if (controlHorizontal != 0 || controlVertical != 0)
       Move?.Invoke(controlHorizontal, controlVertical);
-    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionJump]))
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.Control.Jump]))
       Jump?.Invoke();
-    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionShoot]))
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.Control.Shoot]))
       Shoot?.Invoke();
-    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionChangeWeapon]))
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.Control.ChangeWeapon]))
       ChangeWeapon?.Invoke();
-    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.ActionLockOn]))
-      LockOn?.Invoke();
+    if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.Control.LockTarget]))
+      LockTarget?.Invoke();
   }
 
   private void _MenuInputs() { }

@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AppConfig : MonoBehaviour {
+  public static readonly string PlayerName = "Player";
+
   // SCENES
   public static readonly string TitleScreen = "Title_Screen";
-  public static readonly string[] Level = new string[]{ "Level_1" , "Level_2" };
+  public static readonly string[] Level = new string[] { "Level_1", "Level_2" };
   public static readonly string SceneTraining = "Testing_Grounds";
 
   // OPTIONS
@@ -14,25 +16,27 @@ public class AppConfig : MonoBehaviour {
   // HUD
   public static readonly int SpaceBetweenHeartIcons = 20; // in pixels
 
-  // PLAYER ACTIONS
-  public static readonly string PlayerName = "Player";
+  // CONTROLS
+  public enum Control {
+    MoveUp,
+    MoveRight,
+    MoveDown,
+    MoveLeft,
+    Jump,
+    Shoot,
+    ChangeWeapon,
+    LockTarget
+  };
 
-  public static readonly string ActionWalkUP = "WalkUp";
-  public static readonly string ActionWalkDOWN = "WalkDown";
-  public static readonly string ActionWalkLEFT = "WalkLeft";
-  public static readonly string ActionWalkRIGHT = "WalkRight";
-  public static readonly string ActionMoveHorizontal = "Horizontal";
-  public static readonly string ActionMoveVertical = "Vertical";
-  public static readonly string ActionJump = "Jump";
-  public static readonly string ActionShoot = "Shoot";
-  public static readonly string ActionChangeWeapon = "ChangeWeapon";
-  public static readonly string ActionLockOn = "LockOn";
-
-  public static Dictionary<string, KeyCode> KeyBindings = new() {
-    {ActionJump, KeyCode.Space},
-    {ActionShoot, KeyCode.I},
-    {ActionLockOn, KeyCode.O},
-    {ActionChangeWeapon, KeyCode.L},
+  public static Dictionary<Control, KeyCode> KeyBindings = new() {
+    {Control.MoveUp, KeyCode.W },
+    {Control.MoveRight, KeyCode.D },
+    {Control.MoveDown, KeyCode.S },
+    {Control.MoveLeft, KeyCode.A },
+    {Control.Jump, KeyCode.Space},
+    {Control.Shoot, KeyCode.I},
+    {Control.ChangeWeapon, KeyCode.L},
+    {Control.LockTarget, KeyCode.O},
   };
 
   // DAMAGE VALUES
@@ -40,5 +44,4 @@ public class AppConfig : MonoBehaviour {
   public static readonly float PoisonTickRate = 2f;
   public static readonly int PitDamage = 3;
   public static readonly int SpikesDamage = 4;
-
 }

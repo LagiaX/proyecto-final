@@ -3,11 +3,8 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour {
 
-  [Header("Movement")]
-  public Vector3 direction;
-  public float facingSpeed;
-  public float moveSpeedMod;
-  public float jumpDistance;
+  public delegate void ActionLock(Transform target);
+  public static event ActionLock Lock;
 
   [Header("Weapon")]
   public Weapon weapon;
@@ -19,15 +16,12 @@ public class PlayerActions : MonoBehaviour {
   public List<Transform> enemiesInRange = new List<Transform>();
   public List<Transform> targetsInRange = new List<Transform>();
 
-  private Rigidbody _rigidbody;
-  private float _moveSpeedFinal;
-
   void OnEnable() {
     Controls.Move += Move;
     Controls.Jump += Jump;
     Controls.Shoot += Shoot;
     Controls.ChangeWeapon += ChangeWeapon;
-    Controls.LockOn += ToggleLock;
+    Controls.LockTarget += ToggleLock;
     OrganicTarget.Dead += RemoveEnemyOutOfRange;
   }
 
@@ -36,34 +30,8 @@ public class PlayerActions : MonoBehaviour {
     Controls.Jump -= Jump;
     Controls.Shoot -= Shoot;
     Controls.ChangeWeapon -= ChangeWeapon;
-    Controls.LockOn -= ToggleLock;
+    Controls.LockTarget -= ToggleLock;
     OrganicTarget.Dead -= RemoveEnemyOutOfRange;
-  }
-
-  void Awake() {
-    if (PlayerSystems.instance.movement.rigidbody != null) {
-      _rigidbody = PlayerSystems.instance.movement.rigidbody;
-    }
-    // TODO: proper platformer jump and remove this
-    Physics.gravity = new Vector3(0, -30, 0);
-  }
-
-  private void _CalculateMovementSpeed() {
-    _moveSpeedFinal = PlayerSystems.instance.stats.stats.movementSpeed * moveSpeedMod;
-  }
-
-  private void _CalculateMoveDirection(float x, float z) {
-    Vector3 cameraForward = new(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z);
-    Vector3 cameraRight = new(Camera.main.transform.right.x, 0, Camera.main.transform.right.z);
-    direction = (cameraForward * z + cameraRight * x).normalized;
-  }
-
-  private void _ChangeFaceDirection() {
-    if (target != null) {
-      transform.LookAt(target.transform);
-      return;
-    }
-    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), facingSpeed / 1000);
   }
 
   private void _AssignTarget() {
@@ -76,17 +44,11 @@ public class PlayerActions : MonoBehaviour {
   }
 
   public void Move(float x, float z) {
-    _CalculateMoveDirection(x, z);
-    _ChangeFaceDirection();
-    _CalculateMovementSpeed();
-    transform.position += direction * _moveSpeedFinal * Time.deltaTime;
-    // This solution has problems with gravity and climbing supposedly unclimbable slopes
-    //_rb.velocity = direction * _moveSpeedFinal;
+    PlayerSystems.instance.movement.CalculateDirection(x, z);
   }
 
   public void Jump() {
-    if (!PlayerRay.isGrounded) return;
-    _rigidbody.velocity += Vector3.up * Mathf.Sqrt(jumpDistance * 2 * -Physics.gravity.y);
+    PlayerSystems.instance.movement.Jump();
   }
 
   public void Shoot() {
@@ -99,13 +61,12 @@ public class PlayerActions : MonoBehaviour {
 
   public void ToggleLock() {
     if (target == null) {
-      moveSpeedMod = 0.75f;
       _AssignTarget();
-      _ChangeFaceDirection();
+      Lock?.Invoke(target);
     }
     else {
-      moveSpeedMod = 1f;
       target = null;
+      Lock?.Invoke(target);
     }
   }
 
