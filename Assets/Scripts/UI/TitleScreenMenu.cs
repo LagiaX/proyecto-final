@@ -9,7 +9,7 @@ public class TitleScreenMenu : MonoBehaviour {
   }
 
   void Start() {
-    _animator.StartPlayback();
+    //_animator.Play("Title");
   }
 
   public void OnNewGame() {

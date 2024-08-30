@@ -5,13 +5,20 @@ using UnityEngine;
 public class HeadUpDisplay : MonoBehaviour {
   public static HeadUpDisplay instance;
 
+  [Header("Health")]
   public int totalHearts;
   public Image[] heartIcons;
   public Image[] emptyHeartIcons;
   public RectTransform healthBG;
 
+  [Header("Weapons")]
+  public Image[] weapons;
+  public Sprite[] weaponSprites;
+
+  [Header("Coins")]
   public TMP_Text coins;
 
+  private int _currentWeapon = 0;
   private int _currentHeartIcon;
 
   void Awake() {
@@ -21,6 +28,8 @@ public class HeadUpDisplay : MonoBehaviour {
       SpawnManager.PlayerRespawn += InitHealth;
       PlayerStats.PlayerHealed += OnPlayerHeal;
       PlayerStats.PlayerDamaged += OnPlayerDamage;
+      PlayerInventory.WeaponCollect += OnWeaponCollect;
+      PlayerInventory.WeaponChange += OnWeaponChange;
       return;
     }
     Destroy(gameObject);
@@ -84,5 +93,20 @@ public class HeadUpDisplay : MonoBehaviour {
       PlayerSystems.instance.stats.health.healthCurrent / 4,
       PlayerSystems.instance.stats.health.healthCurrent % 4
     );
+  }
+
+  public void OnWeaponCollect(WeaponType type, int slot) {
+    Image icon = weapons[slot];
+    icon.sprite = weaponSprites[(int)type];
+    if (_currentWeapon != slot) {
+      icon.color = new Vector4(icon.color.r, icon.color.g, icon.color.b, 0.5f);
+    }
+  }
+
+  public void OnWeaponChange(int slot) {
+    Image currentIcon = weapons[_currentWeapon];
+    weapons[_currentWeapon].color = new Vector4(currentIcon.color.r, currentIcon.color.g, currentIcon.color.b, 0.5f);
+    weapons[slot].color = new Vector4(currentIcon.color.r, currentIcon.color.g, currentIcon.color.b, 1f);
+    _currentWeapon = slot;
   }
 }
