@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpikesFloor : MonoBehaviour {
 
-  public float bounceSpeed = 15f;
+  public float bounceSpeed = 12f;
 
   void OnEnable() {
     DebugManager.DebugMode += _DebugMode;
@@ -19,11 +19,14 @@ public class SpikesFloor : MonoBehaviour {
   }
 
   public void OnCollisionEnter(Collision other) {
-    if (other.gameObject.TryGetComponent(out PlayerSystems player)) {
-      if (player.stats.health.IsAlive()) {
-        player.stats.OnDamage(AppConfig.SpikesDamage);
+    if (other.gameObject.TryGetComponent(out PlayerSystems player) && player.stats.health.IsAlive()) {
+      if (player.stats.health.healthCurrent - AppConfig.SpikesDamage > 0) {
         player.movement.rigidbody.velocity += Vector3.up * bounceSpeed;
       }
+      else {
+        player.movement.rigidbody.velocity = Vector3.zero;
+      }
+      player.stats.OnDamage(AppConfig.SpikesDamage);
     }
   }
 }

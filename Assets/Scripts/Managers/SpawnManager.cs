@@ -82,6 +82,7 @@ public class SpawnManager : MonoBehaviour {
     PlayerSystems.instance.stats.InitStatusAilments();
     PlayerSystems.instance.stats.enabled = true;
     PlayerSystems.instance.actions.enabled = true;
+    PlayerSystems.instance.movement.enabled = true;
     Transform closestCheckpoint = Utils.GetClosestGameObjectFromList(player.transform.position, checkpoints);
     PlayerSystems.instance.transform.position = closestCheckpoint.position;
     PlayerRespawn?.Invoke(PlayerSystems.instance.stats);

@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
   }
 
   public void OnPlayerDead(PlayerStats ps) {
+    PlayerSystems.instance.actions.enabled = false;
+    PlayerSystems.instance.movement.enabled = false;
     ps.enabled = false;
     Utils.DelayFor(() => SpawnManager.instance.Respawn(), TimeSpan.FromSeconds(2f));
   }

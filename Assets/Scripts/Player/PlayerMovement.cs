@@ -17,11 +17,20 @@ public class PlayerMovement : MonoBehaviour {
       Utils.MissingComponent(typeof(Rigidbody).Name, PlayerSystems.instance.player.name);
   }
 
-  private void OnGUI() {
+  void OnEnable() {
+    PlayerActions.ActionLock += _OnTargetLock;
+    Controls.Move += CalculateDirection;
+    Controls.MoveRelease += _MoveRelease;
+  }
+
+  void OnDisable() {
+    PlayerActions.ActionLock -= _OnTargetLock;
+    Controls.Move -= CalculateDirection;
+    Controls.MoveRelease -= _MoveRelease;
   }
 
   void Start() {
-    PlayerActions.Lock += _OnTargetLock;
+    Physics.gravity = -Vector3.up * jumpDistance * 5;
   }
 
   void Update() {
@@ -54,16 +63,24 @@ public class PlayerMovement : MonoBehaviour {
   private void _Move() {
     velocity = direction * moveSpeedFinal + Vector3.up * rigidbody.velocity.y;
     rigidbody.velocity = velocity;
+  }
 
-    velocity = Vector3.zero;
+  private void _MoveRelease() {
     direction = Vector3.zero;
-    moveSpeedFinal = 0;
   }
 
   public void Jump() {
     if (!PlayerRay.isGrounded) return;
     velocity.y = Mathf.Sqrt(jumpDistance * 2 * -Physics.gravity.y);
     rigidbody.velocity = velocity;
+  }
+
+  public void JumpRelease() {
+    if (rigidbody.velocity.y > 0) {
+      Vector3 velocity = rigidbody.velocity;
+      velocity.y /= 2f;
+      rigidbody.velocity = velocity;
+    }
   }
 
   public void CalculateDirection(float x, float z) {

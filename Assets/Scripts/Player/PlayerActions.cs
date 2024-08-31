@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour {
 
-  public delegate void ActionLock(Transform target);
-  public static event ActionLock Lock;
+  public delegate void OnActionLock(Transform target);
+  public static event OnActionLock ActionLock;
 
   [Header("Weapon")]
   public Weapon weapon;
@@ -17,8 +17,8 @@ public class PlayerActions : MonoBehaviour {
   public List<Transform> targetsInRange = new List<Transform>();
 
   void OnEnable() {
-    Controls.Move += Move;
     Controls.Jump += Jump;
+    Controls.JumpRelease += JumpRelease;
     Controls.Shoot += Shoot;
     Controls.ChangeWeapon += ChangeWeapon;
     Controls.LockTarget += ToggleLock;
@@ -26,8 +26,8 @@ public class PlayerActions : MonoBehaviour {
   }
 
   void OnDisable() {
-    Controls.Move -= Move;
     Controls.Jump -= Jump;
+    Controls.JumpRelease -= JumpRelease;
     Controls.Shoot -= Shoot;
     Controls.ChangeWeapon -= ChangeWeapon;
     Controls.LockTarget -= ToggleLock;
@@ -51,6 +51,10 @@ public class PlayerActions : MonoBehaviour {
     PlayerSystems.instance.movement.Jump();
   }
 
+  public void JumpRelease() {
+    PlayerSystems.instance.movement.JumpRelease();
+  }
+
   public void Shoot() {
     weapon?.OnAttack();
   }
@@ -62,11 +66,11 @@ public class PlayerActions : MonoBehaviour {
   public void ToggleLock() {
     if (target == null) {
       _AssignTarget();
-      Lock?.Invoke(target);
+      ActionLock?.Invoke(target);
     }
     else {
       target = null;
-      Lock?.Invoke(target);
+      ActionLock?.Invoke(target);
     }
   }
 

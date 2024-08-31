@@ -85,9 +85,6 @@ public class PlayerStats : OrganicTarget {
   }
 
   public override void OnDeath() {
-    if (gameObject.TryGetComponent(out PlayerActions controls)) {
-      controls.enabled = false;
-    }
     // play death animation
     PlayerDead?.Invoke(this);
   }
