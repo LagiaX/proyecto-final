@@ -15,6 +15,7 @@ public class PlayerSystems : MonoBehaviour {
   public PlayerMovement movement;
   public PlayerInventory inventory;
   public PlayerRay ray;
+  public PlayerGravity gravity;
 
   void Awake() {
     if (instance == null) {
@@ -30,6 +31,7 @@ public class PlayerSystems : MonoBehaviour {
       movement = GetComponent<PlayerMovement>();
       inventory = GetComponent<PlayerInventory>();
       ray = GetComponent<PlayerRay>();
+      gravity = GetComponent<PlayerGravity>();
       return;
     }
     Destroy(gameObject);

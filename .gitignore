@@ -366,12 +366,17 @@ FodyWeavers.xsd
 New Terrain*
 Animations/
 Materials/
+Models/
 Prefabs/
+ProBuilder Data/
 Scenes/
 Imports/
 TerrainSampleAssets/
 TextMesh Pro/
+Textures/
 
 #Misc folders
+ProjectSettings/
+UserSettings/
 Library/
 Temp/

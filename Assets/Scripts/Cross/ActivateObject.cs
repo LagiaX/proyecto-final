@@ -26,7 +26,7 @@ public class ActivateObject : MonoBehaviour {
   public void OnTriggerExit(Collider other) {
     if (_isDestroying) return;
     if (other.TryGetComponent(out PlayerSystems player)) {
-      if (activateOnEnter) {
+      if (activateOnExit) {
         _ActivateAllObjects();
       }
       if (activateOnce) {

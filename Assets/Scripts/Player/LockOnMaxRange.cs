@@ -5,13 +5,13 @@ public class LockOnMaxRange : MonoBehaviour {
   public Collider sphereRange;
 
   void Awake() {
-    if (!(player = PlayerSystems.instance.actions))
-      Utils.MissingComponent(typeof(PlayerActions).Name, PlayerSystems.instance.name);
     if (!TryGetComponent(out sphereRange))
       Utils.MissingComponent(typeof(Collider).Name, name);
   }
 
   void Start() {
+    if (!(player = PlayerSystems.instance.actions))
+      Utils.MissingComponent(typeof(PlayerActions).Name, PlayerSystems.instance.name);
     sphereRange.transform.localScale = Vector3.one * player.maxLockOnRange;
   }
 

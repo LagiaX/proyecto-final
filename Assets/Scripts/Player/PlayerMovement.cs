@@ -12,11 +12,6 @@ public class PlayerMovement : MonoBehaviour {
 
   private Transform _target;
 
-  void Awake() {
-    if (!PlayerSystems.instance.player.TryGetComponent(out rigidbody))
-      Utils.MissingComponent(typeof(Rigidbody).Name, PlayerSystems.instance.player.name);
-  }
-
   void OnEnable() {
     PlayerActions.ActionLock += _OnTargetLock;
     Controls.Move += CalculateDirection;
@@ -30,7 +25,8 @@ public class PlayerMovement : MonoBehaviour {
   }
 
   void Start() {
-    Physics.gravity = -Vector3.up * jumpDistance * 5;
+    if (!PlayerSystems.instance.player.TryGetComponent(out rigidbody))
+      Utils.MissingComponent(typeof(Rigidbody).Name, PlayerSystems.instance.player.name);
   }
 
   void Update() {
@@ -61,7 +57,10 @@ public class PlayerMovement : MonoBehaviour {
   }
 
   private void _Move() {
-    velocity = direction * moveSpeedFinal + Vector3.up * rigidbody.velocity.y;
+    float verticalVelocity = velocity.y;
+    velocity = direction * moveSpeedFinal;
+    velocity = Vector3.ProjectOnPlane(velocity, PlayerSystems.instance.ray.slopeData.normal);
+    velocity.y = verticalVelocity;
     rigidbody.velocity = velocity;
   }
 
@@ -71,15 +70,12 @@ public class PlayerMovement : MonoBehaviour {
 
   public void Jump() {
     if (!PlayerRay.isGrounded) return;
-    velocity.y = Mathf.Sqrt(jumpDistance * 2 * -Physics.gravity.y);
-    rigidbody.velocity = velocity;
+    velocity.y = Mathf.Sqrt(jumpDistance * 2 * -PlayerGravity.gravity);
   }
 
   public void JumpRelease() {
-    if (rigidbody.velocity.y > 0) {
-      Vector3 velocity = rigidbody.velocity;
+    if (velocity.y > 0) {
       velocity.y /= 2f;
-      rigidbody.velocity = velocity;
     }
   }
 
