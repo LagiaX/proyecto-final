@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MatchPattern : MonoBehaviour {
   public delegate void isPuzzleSolved(bool isSolved);
-  public static event isPuzzleSolved PuzzleSolved;
+  public event isPuzzleSolved PuzzleSolved;
 
   public int nElements = 3;
   public bool colorMatch;
@@ -10,7 +10,7 @@ public class MatchPattern : MonoBehaviour {
   //public string[] strintSolution;
   //public Vector3[] positionSolution;
   //public Vector3[] rotationSolution;
-  public GameObject[] gameobjects;
+  public ColorChanger[] objects;
   public bool[] matchingElements;
 
   private Renderer[] _renderers;
@@ -18,14 +18,16 @@ public class MatchPattern : MonoBehaviour {
   void Awake() {
     matchingElements = new bool[nElements];
     _renderers = new Renderer[nElements];
-    ColorChanger.ColorChange += CheckSolved;
+    for (int i = 0; i < objects.Length; i++) {
+      objects[i].ColorChange += CheckSolved;
+    }
   }
 
   void Start() {
     if (colorMatch) {
-      for (int i = 0; i < gameobjects.Length; i++) {
-        if (!gameobjects[i].TryGetComponent(out _renderers[i])) {
-          Utils.MissingComponent(typeof(Renderer).Name, gameobjects[i].name);
+      for (int i = 0; i < objects.Length; i++) {
+        if (!objects[i].TryGetComponent(out _renderers[i])) {
+          Utils.MissingComponent(typeof(Renderer).Name, objects[i].name);
         }
       }
     }
@@ -34,7 +36,7 @@ public class MatchPattern : MonoBehaviour {
   public void CheckSolved(Color c) {
     bool solved = true;
     int index = 0;
-    while (index < gameobjects.Length && solved) {
+    while (index < objects.Length && solved) {
       matchingElements[index] = colorSolution[index] == _renderers[index].material.color;
       solved = solved && matchingElements[index];
       index++;

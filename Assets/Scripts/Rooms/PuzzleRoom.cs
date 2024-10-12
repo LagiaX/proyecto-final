@@ -3,13 +3,14 @@ using UnityEngine;
 public class PuzzleRoom : MonoBehaviour {
   public bool roomClear;
   public RemoteDoor door;
+  public MatchPattern matchPattern;
 
   void Awake() {
     if (roomClear) {
       DestroyRoomLogic(3);
       return;
     }
-    MatchPattern.PuzzleSolved += OnPuzzleSolved;
+    matchPattern.PuzzleSolved += OnPuzzleSolved;
   }
 
   void Update() {
@@ -27,7 +28,7 @@ public class PuzzleRoom : MonoBehaviour {
   }
 
   public async void DestroyRoomLogic(int delay) {
-    MatchPattern.PuzzleSolved -= OnPuzzleSolved;
+    matchPattern.PuzzleSolved -= OnPuzzleSolved;
     await GarbageManager.RemoveInTime(gameObject, delay);
   }
 }

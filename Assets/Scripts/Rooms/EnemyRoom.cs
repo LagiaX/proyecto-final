@@ -5,7 +5,7 @@ public class EnemyRoom : MonoBehaviour, IActivatable {
 
   public bool roomClear;
   public List<OrganicTarget> enemies = new List<OrganicTarget>();
-  public RemoteDoor door;
+  public RemoteDoor[] doors;
 
   void Awake() {
     if (roomClear) {
@@ -25,7 +25,9 @@ public class EnemyRoom : MonoBehaviour, IActivatable {
   public void CheckRoom() {
     if (enemies.Count == 0) {
       roomClear = true;
-      door.OnActivate();
+      for (int i = 0; i < doors.Length; i++) {
+        doors[i].OnActivate();
+      }
     }
   }
 

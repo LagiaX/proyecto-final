@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ColorChanger : MonoBehaviour {
   public delegate void ColorChanged(Color c);
-  public static event ColorChanged ColorChange;
+  public event ColorChanged ColorChange;
 
   private Renderer _renderer;
   private Color[] _colors;
@@ -22,6 +22,7 @@ public class ColorChanger : MonoBehaviour {
     if (collision.gameObject.TryGetComponent(out PlayerSystems player)) {
       _colorIndex = (_colorIndex + 1) % _colors.Length;
       _renderer.material.color = _colors[_colorIndex];
+      _renderer.material.SetColor("_EmissionColor", _colors[_colorIndex]);
       ColorChange?.Invoke(_renderer.material.color);
     }
   }
