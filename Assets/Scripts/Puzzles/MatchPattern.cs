@@ -7,10 +7,8 @@ public class MatchPattern : MonoBehaviour {
   public int nElements = 3;
   public bool colorMatch;
   public Color[] colorSolution;
-  //public string[] strintSolution;
-  //public Vector3[] positionSolution;
-  //public Vector3[] rotationSolution;
   public ColorChanger[] objects;
+  public ActivatableTotem[] activatableTotem;
   public bool[] matchingElements;
 
   private Renderer[] _renderers;
@@ -38,8 +36,19 @@ public class MatchPattern : MonoBehaviour {
     int index = 0;
     while (index < objects.Length && solved) {
       matchingElements[index] = colorSolution[index] == _renderers[index].material.color;
+      if (matchingElements[index]) {
+        activatableTotem[index].OnActivate();
+      }
+      else {
+        activatableTotem[index].Deactivate();
+      }
       solved = solved && matchingElements[index];
       index++;
+    }
+    if (solved) {
+      for (int i = 0; i < objects.Length; i++) {
+        objects[i].CanChangeColor(false);
+      }
     }
     PuzzleSolved?.Invoke(solved);
   }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ActivateObject : MonoBehaviour {
 
-  [Header("Activate on trigger")]
+  [Header("Activate on player trigger")]
   public GameObject[] gameobjects;
   public bool activateOnEnter = true;
   public bool activateOnExit = false;

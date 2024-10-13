@@ -169,3 +169,7 @@ public struct SoundSettings {
   public float sfxVolume;
   public AudioSpeakerMode speakerMode;
 }
+
+public struct Shortcuts {
+  public static readonly string Emission = "_EmissionColor";
+}
