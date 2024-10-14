@@ -94,6 +94,7 @@ public struct StatsNpc {
   }
 }
 
+[Serializable]
 public struct Inventory {
   public int coins;
   public WeaponType[] weapons;

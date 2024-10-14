@@ -35,7 +35,7 @@ public class Proyectile : MonoBehaviour, IShootable {
 
   public void OnCollisionEnter(Collision collision) {
     OnImpact(speed);
-    IDamageable target = collision.gameObject.GetComponent<IDamageable>();
+    EnemyStats target = collision.gameObject.GetComponent<EnemyStats>();
     if (target != null) {
       target.OnDamage(power);
     }

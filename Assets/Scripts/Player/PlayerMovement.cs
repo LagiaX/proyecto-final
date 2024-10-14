@@ -14,13 +14,13 @@ public class PlayerMovement : MonoBehaviour {
 
   void OnEnable() {
     PlayerActions.ActionLock += _OnTargetLock;
-    Controls.Move += CalculateDirection;
+    Controls.Move += _Move;
     Controls.MoveRelease += _MoveRelease;
   }
 
   void OnDisable() {
     PlayerActions.ActionLock -= _OnTargetLock;
-    Controls.Move -= CalculateDirection;
+    Controls.Move -= _Move;
     Controls.MoveRelease -= _MoveRelease;
   }
 
@@ -30,16 +30,17 @@ public class PlayerMovement : MonoBehaviour {
   }
 
   void Update() {
-    _Move();
+    if (_target != null) {
+      transform.LookAt(_target.transform);
+      PlayerSystems.instance.weaponSlot.transform.forward = _target.transform.position - transform.position;
+    }
+    _CalculateVelocity();
+    rigidbody.velocity = velocity;
   }
 
   private void _OnTargetLock(Transform target) {
     _target = target;
     moveSpeedMod = target == null ? 1f : 0.75f;
-  }
-
-  private void _CalculateMovementSpeed() {
-    moveSpeedFinal = PlayerSystems.instance.stats.stats.movementSpeed * moveSpeedMod;
   }
 
   private void _CalculateMoveDirection(float x, float z) {
@@ -49,23 +50,26 @@ public class PlayerMovement : MonoBehaviour {
   }
 
   private void _ChangeFaceDirection() {
-    if (_target != null) {
-      transform.LookAt(_target.transform);
-      return;
+    if (_target == null) {
+      transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), facingSpeed / 1000);
     }
-    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), facingSpeed / 1000);
   }
 
-  private void _Move() {
+  public void _CalculateVelocity() {
     float verticalVelocity = velocity.y;
     velocity = direction * moveSpeedFinal;
     velocity = Vector3.ProjectOnPlane(velocity, PlayerSystems.instance.ray.slopeData.normal);
     velocity.y = verticalVelocity;
-    rigidbody.velocity = velocity;
+  }
+
+  private void _Move(float x, float z) {
+    _CalculateMoveDirection(x, z);
+    _ChangeFaceDirection();
+    moveSpeedFinal = PlayerSystems.instance.stats.stats.movementSpeed * moveSpeedMod;
   }
 
   private void _MoveRelease() {
-    direction = Vector3.zero;
+    moveSpeedFinal = 0;
   }
 
   public void Jump() {
@@ -77,11 +81,5 @@ public class PlayerMovement : MonoBehaviour {
     if (velocity.y > 0) {
       velocity.y /= 2f;
     }
-  }
-
-  public void CalculateDirection(float x, float z) {
-    _CalculateMoveDirection(x, z);
-    _ChangeFaceDirection();
-    _CalculateMovementSpeed();
   }
 }

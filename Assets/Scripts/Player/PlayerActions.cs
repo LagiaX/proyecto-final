@@ -43,10 +43,6 @@ public class PlayerActions : MonoBehaviour {
     }
   }
 
-  public void Move(float x, float z) {
-    PlayerSystems.instance.movement.CalculateDirection(x, z);
-  }
-
   public void Jump() {
     PlayerSystems.instance.movement.Jump();
   }
