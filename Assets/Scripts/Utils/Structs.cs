@@ -43,24 +43,12 @@ public struct Durability {
 public struct StatsPlayer {
   public string name;
   public int movementSpeedBase;
-  public float movementSpeedModifier;
-  public int movementSpeed {
-    get {
-      return (int)(movementSpeedBase * movementSpeedModifier);
-    }
-  }
   public int movementSpeedMax;
-  const float movementSpeedModMax = 2.2f;
 
-  public StatsPlayer(string name, int movementSpeed, float movementSpeedModifier, int movementSpeedMax) {
+  public StatsPlayer(string name, int movementSpeed, int movementSpeedMax) {
     this.name = name;
     this.movementSpeedBase = movementSpeed;
-    this.movementSpeedModifier = movementSpeedModifier;
     this.movementSpeedMax = movementSpeedMax;
-  }
-
-  public void ModifyMovementSpeed(float modifier) {
-    movementSpeedModifier = Mathf.Clamp(movementSpeedModifier * modifier, 0.5f, movementSpeedModMax);
   }
 }
 

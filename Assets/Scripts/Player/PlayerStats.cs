@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
 
 public class PlayerStats : OrganicTarget {
   public delegate void IsPlayerAlive(PlayerStats ps);
@@ -13,12 +14,16 @@ public class PlayerStats : OrganicTarget {
   public static event isPlayerDamaged PlayerDamaged;
 
   public StatsPlayer stats;
-  public bool[] ailments;
+  public float[] buffDuration;
   public float[] ailmentDuration;
-  public float poisonTickTimer = AppConfig.PoisonTickRate;
+
+  private float poisonTickTimer = AppConfig.PoisonTickRate;
+  private float attackMod = 1f;
+  private float speedMod = 1f;
 
   protected override void Start() {
     InitStats();
+    InitBuffs();
     InitStatusAilments();
     PlayerAlive?.Invoke(this);
   }
@@ -28,26 +33,55 @@ public class PlayerStats : OrganicTarget {
       OnDeath();
       return;
     }
-    if (ailments[(int)Ailment.Poisoned]) {
-      ApplyPoisonDamage();
+  }
+
+  private void _SetModifier(Buff b, float value) {
+    switch (b) {
+      case Buff.Attack:
+        attackMod = value;
+        break;
+      case Buff.Speed:
+        speedMod = value;
+        break;
     }
   }
 
-  private void ApplyPoisonDamage() {
-    // no longer alive OR poison effect finished, reset poison mechanic
-    if (!health.IsAlive() || ailmentDuration[(int)Ailment.Poisoned] <= 0) {
-      OnCureAilment(Ailment.Poisoned);
-      poisonTickTimer = 0f;
-      return;
+  private void _ApplyAilmentDamage(Ailment a) {
+    switch (a) {
+      case Ailment.Burned:
+        OnDamage(AppConfig.BurnDamage);
+        break;
+      case Ailment.Poisoned:
+        OnDamage(AppConfig.PoisonDamage);
+        break;
     }
+  }
 
-    if (poisonTickTimer <= 0) {
-      // change to OnPoisonDamage when poison VFX is ready
-      OnDamage(AppConfig.PoisonDamage);
-      poisonTickTimer = AppConfig.PoisonTickRate;
+  private async void _CountBuffDuration(Buff b) {
+    while (buffDuration[(int)b] > 0) {
+      buffDuration[(int)b] -= Time.deltaTime;
+      await Task.Yield();
     }
-    poisonTickTimer -= Time.deltaTime;
-    ailmentDuration[(int)Ailment.Poisoned] -= Time.deltaTime;
+    _SetModifier(b, 1f);
+  }
+
+  private async void _CountAilmentDuration(Ailment a) {
+    while (ailmentDuration[(int)a] > 0) {
+      if (poisonTickTimer > 0) {
+        poisonTickTimer -= Time.deltaTime;
+      }
+      else {
+        // change to OnPoisonDamage when poison VFX is ready
+        _ApplyAilmentDamage(a);
+        poisonTickTimer = AppConfig.PoisonTickRate;
+      }
+      ailmentDuration[(int)a] -= Time.deltaTime;
+      await Task.Yield();
+    }
+  }
+
+  public float MovementSpeed() {
+    return stats.movementSpeedBase * speedMod;
   }
 
   public void InitStats() {
@@ -55,13 +89,12 @@ public class PlayerStats : OrganicTarget {
     stats = Utils.GetPlayerBaseStats();
   }
 
+  public void InitBuffs() {
+    buffDuration = new float[Enum.GetNames(typeof(Buff)).Length];
+  }
+
   public void InitStatusAilments() {
-    ailments = new bool[Enum.GetNames(typeof(Ailment)).Length];
     ailmentDuration = new float[Enum.GetNames(typeof(Ailment)).Length];
-    for (int i = 0; i < ailments.Length; i++) {
-      ailments[i] = false;
-      ailmentDuration[i] = 0f;
-    }
   }
 
   public override void OnDamage(int damage) {
@@ -74,13 +107,30 @@ public class PlayerStats : OrganicTarget {
     PlayerHealed?.Invoke(healing);
   }
 
+  public void OnNewBuff(Buff b, float modifier, float duration) {
+    if (buffDuration[(int)b] > 0) {
+      buffDuration[(int)b] = duration;
+      return;
+    }
+    buffDuration[(int)b] = duration;
+    _SetModifier(b, modifier);
+    _CountBuffDuration(b);
+  }
+
+  public void OnDispellBuff(Buff b) {
+    buffDuration[(int)b] = 0;
+  }
+
   public void OnNewAilment(Ailment a, float duration) {
-    ailments[(int)a] = true;
+    if (ailmentDuration[(int)a] > 0) {
+      ailmentDuration[(int)a] = duration;
+      return;
+    }
     ailmentDuration[(int)a] = duration;
+    _CountAilmentDuration(a);
   }
 
   public void OnCureAilment(Ailment a) {
-    ailments[(int)a] = false;
     ailmentDuration[(int)a] = 0;
   }
 

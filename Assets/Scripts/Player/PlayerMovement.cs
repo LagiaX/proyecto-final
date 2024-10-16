@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour {
   private void _Move(float x, float z) {
     _CalculateMoveDirection(x, z);
     _ChangeFaceDirection();
-    moveSpeedFinal = PlayerSystems.instance.stats.stats.movementSpeed * moveSpeedMod;
+    moveSpeedFinal = PlayerSystems.instance.stats.MovementSpeed() * moveSpeedMod;
   }
 
   private void _MoveRelease() {

@@ -11,6 +11,8 @@ public class PowerUpHealth : PowerUp {
         collector.OnDamage(recovery);
         return;
       }
+      playerStats.OnCureAilment(Ailment.Poisoned);
+      playerStats.OnCureAilment(Ailment.Burned);
       playerStats.OnRestoreHealth(recovery);
     }
   }

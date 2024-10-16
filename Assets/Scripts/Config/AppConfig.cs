@@ -42,6 +42,8 @@ public class AppConfig : MonoBehaviour {
   // DAMAGE VALUES
   public static readonly int PoisonDamage = 1;
   public static readonly float PoisonTickRate = 2f;
+  public static readonly int BurnDamage = 3;
+  public static readonly float BurnTickRate = 1f;
   public static readonly int PitDamage = 3;
   public static readonly int SpikesDamage = 4;
 }

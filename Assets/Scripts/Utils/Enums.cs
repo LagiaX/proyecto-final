@@ -1,4 +1,9 @@
-﻿public enum Ailment {
+﻿public enum Buff {
+  Attack,
+  Speed
+}
+
+public enum Ailment {
   Poisoned,
   Burned
 }

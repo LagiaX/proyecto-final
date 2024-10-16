@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-public class PlatformMovement : MonoBehaviour {
+public class PlatformMovement : MonoBehaviour, IActivatable {
 
   public Vector3[] positions;
   public float movementSpeed;
@@ -24,30 +23,39 @@ public class PlatformMovement : MonoBehaviour {
     if (isActive) {
       _MoveToNextPoint();
       _CheckDistance();
-      if (hasDelay) {
-        _timer = delay;
-      }
     }
   }
 
   private void _MoveToNextPoint() {
-    transform.position = Vector3.MoveTowards(
-      transform.position,
+    transform.localPosition = Vector3.MoveTowards(
+      transform.localPosition,
       positions[_currentPosition],
       movementSpeed * Time.deltaTime
     );
   }
 
   private void _CheckDistance() {
-    if (Vector3.Distance(transform.position, positions[_currentPosition]) <= 0.01f) {
-      transform.position = positions[_currentPosition];
+    if (Vector3.Distance(transform.localPosition, positions[_currentPosition]) <= 0.01f) {
+      transform.localPosition = positions[_currentPosition];
       isActive = nonStop;
+      _timer = delay;
       _currentPosition = (_currentPosition + 1) % positions.Length;
     }
   }
 
-  public void ActivatePlatform(bool nonStop) {
+  public void OnActivate() {
     isActive = true;
-    this.nonStop = nonStop;
+  }
+
+  public void OnCollisionEnter(Collision collision) {
+    if (collision != null) {
+      collision.gameObject.transform.SetParent(transform);
+    }
+  }
+
+  public void OnCollisionExit(Collision collision) {
+    if (collision != null) {
+      collision.gameObject.transform.parent = null;
+    }
   }
 }
