@@ -14,7 +14,7 @@ public class PlayerActions : MonoBehaviour {
   public float lockOnRange = 10f;
   public float maxLockOnRange = 15f;
   public List<Transform> enemiesInRange = new List<Transform>();
-  public List<Transform> targetsInRange = new List<Transform>();
+  //public List<Transform> targetsInRange = new List<Transform>();
 
   void OnEnable() {
     Controls.Jump += Jump;
@@ -38,9 +38,9 @@ public class PlayerActions : MonoBehaviour {
     if (enemiesInRange.Count > 0) {
       target = Utils.GetClosestGameObjectFromList(transform.position, enemiesInRange);
     }
-    else if (targetsInRange.Count > 0) {
-      target = Utils.GetClosestGameObjectFromList(transform.position, targetsInRange);
-    }
+    //else if (targetsInRange.Count > 0) {
+    //  target = Utils.GetClosestGameObjectFromList(transform.position, targetsInRange);
+    //}
   }
 
   public void Jump() {
@@ -81,11 +81,11 @@ public class PlayerActions : MonoBehaviour {
     enemiesInRange.Remove(ot.transform);
   }
 
-  public void AddTargetInRange(Target t) {
-    targetsInRange.Add(t.transform);
-  }
+  //public void AddTargetInRange(Target t) {
+  //  targetsInRange.Add(t.transform);
+  //}
 
-  public void RemoveTargetOutOfRange(Target t) {
-    targetsInRange.Remove(t.transform);
-  }
+  //public void RemoveTargetOutOfRange(Target t) {
+  //  targetsInRange.Remove(t.transform);
+  //}
 }

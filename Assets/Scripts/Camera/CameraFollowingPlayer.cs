@@ -4,7 +4,8 @@ public class CameraFollowingPlayer : MonoBehaviour {
   public static CameraFollowingPlayer instance;
 
   public Transform player;
-  public Vector3 offset = new Vector3(0, 4, -4);
+  public float speed;
+  public Vector3 offset;
   public bool stopFollowing;
 
   void Awake() {
@@ -18,6 +19,10 @@ public class CameraFollowingPlayer : MonoBehaviour {
       return;
     }
     Destroy(gameObject);
+  }
+
+  void Start() {
+    transform.position = player.position + offset;
   }
 
   void LateUpdate() {
@@ -35,8 +40,17 @@ public class CameraFollowingPlayer : MonoBehaviour {
 
   private void _UpdateCamera() {
     if (player == null || stopFollowing) return;
-    transform.position = player.position + offset;
-    transform.LookAt(player);
+    transform.position = Vector3.Lerp(transform.position, player.position + offset, speed * Time.deltaTime);
+    transform.forward = Vector3.Slerp(transform.forward, player.transform.position - transform.position, speed * Time.deltaTime);
+    _CollisionChecker();
+  }
+
+  private void _CollisionChecker() {
+    RaycastHit data;
+    Debug.DrawRay(player.position, transform.position - player.transform.position);
+    if (Physics.Raycast(player.position, transform.position - player.transform.position, out data)) {
+      transform.position = Vector3.Lerp(transform.position, data.point, speed * Time.deltaTime);
+    }
   }
 
   public void StartFollowing() { stopFollowing = false; }

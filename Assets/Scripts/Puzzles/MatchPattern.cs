@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class MatchPattern : MonoBehaviour {
@@ -17,7 +19,7 @@ public class MatchPattern : MonoBehaviour {
     matchingElements = new bool[nElements];
     _renderers = new Renderer[nElements];
     for (int i = 0; i < objects.Length; i++) {
-      objects[i].ColorChange += CheckSolved;
+      objects[i].ColorChange += _UpdateMatchingArray;
     }
   }
 
@@ -31,19 +33,25 @@ public class MatchPattern : MonoBehaviour {
     }
   }
 
-  public void CheckSolved(Color c) {
+  private void _UpdateMatchingArray(Color c, ColorChanger o) {
+    int index = Array.FindIndex(objects, obj => obj == o);
+    matchingElements[index] = colorSolution[index] == _renderers[index].material.color;
+    if (matchingElements[index]) {
+      activatableTotem[index].OnActivate();
+    }
+    else {
+      activatableTotem[index].Deactivate();
+    }
+    CheckSolved();
+  }
+
+  public async void CheckSolved() {
     bool solved = true;
     int index = 0;
     while (index < objects.Length && solved) {
-      matchingElements[index] = colorSolution[index] == _renderers[index].material.color;
-      if (matchingElements[index]) {
-        activatableTotem[index].OnActivate();
-      }
-      else {
-        activatableTotem[index].Deactivate();
-      }
       solved = solved && matchingElements[index];
       index++;
+      await Task.Yield();
     }
     if (solved) {
       for (int i = 0; i < objects.Length; i++) {

@@ -96,6 +96,7 @@
     <Compile Include="Assets\Scripts\UI\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerGravity.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSystems.cs" />
     <Compile Include="Assets\Scripts\Managers\SavefileManager.cs" />
     <Compile Include="Assets\Scripts\Config\ModalButtonConfigWarning.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
     <Compile Include="Assets\Scripts\Managers\UserInterfaceManager.cs" />
     <Compile Include="Assets\Scripts\Rooms\PuzzleRoom.cs" />
+    <Compile Include="Assets\Scripts\Objects\ActivatableTotem.cs" />
     <Compile Include="Assets\Scripts\Collectables\Coin.cs" />
     <Compile Include="Assets\Scripts\Player\LockOnMaxRange.cs" />
     <Compile Include="Assets\Scripts\Cross\Target.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="Assets\Scripts\Config\AppConfig.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpSpeed.cs" />
     <Compile Include="Assets\Scripts\Rooms\EnemyRoom.cs" />
+    <Compile Include="Assets\Scripts\Hazards\PitCheckpoint.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollowingPlayer.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonConfiguration.cs" />
   </ItemGroup>

@@ -363,8 +363,11 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Assets
+DefaultVolumeProfile.Assets
+UniversalRenderPipelineGlobalSettings.asset
 New Terrain*
 Animations/
+Configurations/
 Materials/
 Models/
 Prefabs/
@@ -376,6 +379,8 @@ TextMesh Pro/
 Textures/
 
 #Misc folders
+Builds/
+Packages/
 ProjectSettings/
 UserSettings/
 Library/

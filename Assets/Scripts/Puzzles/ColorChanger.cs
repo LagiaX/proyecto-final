@@ -1,8 +1,8 @@
-using UnityEditor;
+using System;
 using UnityEngine;
 
 public class ColorChanger : MonoBehaviour, IActivatable {
-  public delegate void ColorChanged(Color c);
+  public delegate void ColorChanged(Color c, ColorChanger o);
   public event ColorChanged ColorChange;
 
   public Material[] materials;
@@ -16,7 +16,7 @@ public class ColorChanger : MonoBehaviour, IActivatable {
       Utils.MissingComponent(typeof(Renderer).Name, name);
     }
 
-    _materialIndex = ArrayUtility.FindIndex(materials, (m) => m.color == _renderer.material.color);
+    _materialIndex = Array.FindIndex(materials, m => m.color == _renderer.material.color);
   }
 
   public void CanChangeColor(bool canChange) {
@@ -27,7 +27,7 @@ public class ColorChanger : MonoBehaviour, IActivatable {
     if (_canChangeColor) {
       _materialIndex = (_materialIndex + 1) % materials.Length;
       _renderer.material = materials[_materialIndex];
-      ColorChange?.Invoke(_renderer.material.color);
+      ColorChange?.Invoke(_renderer.material.color, this);
     }
   }
 }

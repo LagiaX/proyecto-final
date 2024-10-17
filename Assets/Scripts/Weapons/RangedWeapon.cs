@@ -74,6 +74,9 @@ public class RangedWeapon : Weapon {
       if (type == WeaponType.Pistol || type == WeaponType.Shotgun) {
         _lastFiredProyectile = Instantiate(proyectilePrefab, shootingPoint.position, shootingPoint.rotation);
       }
+      else {
+        _lastFiredProyectile.GetComponent<Collider>().enabled = true;
+      }
       _lastFiredProyectile.gameObject.transform.SetParent(null);
       _lastFiredProyectile?.OnShoot(0);
       isBoltReady = false;

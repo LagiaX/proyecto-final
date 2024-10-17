@@ -21,7 +21,7 @@ public class LockOnRange : MonoBehaviour {
         player.AddEnemyInRange((OrganicTarget)t);
         return;
       }
-      player.AddTargetInRange((Target)t);
+      //player.AddTargetInRange((Target)t);
     }
   }
 
@@ -32,7 +32,7 @@ public class LockOnRange : MonoBehaviour {
         player.RemoveEnemyOutOfRange((OrganicTarget)t);
         return;
       }
-      player.RemoveTargetOutOfRange((Target)t);
+      //player.RemoveTargetOutOfRange((Target)t);
     }
   }
 }

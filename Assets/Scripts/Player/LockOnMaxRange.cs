@@ -23,7 +23,7 @@ public class LockOnMaxRange : MonoBehaviour {
         player.ToggleLock();
         return;
       }
-      player.RemoveTargetOutOfRange((Target)t);
+      //player.RemoveTargetOutOfRange((Target)t);
       player.ToggleLock();
     }
   }
