@@ -1,7 +1,12 @@
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour {
-
+  public delegate void OnInventoryChange(Inventory i);
+  public static event OnInventoryChange InventoryChanged;
+  public delegate void OnCollectCoin(int value);
+  public static event OnCollectCoin CoinCollect;
+  public delegate void OnCollectCircuit(bool obtained, int id);
+  public static event OnCollectCircuit CircuitCollect;
   public delegate void OnCollectWeapon(WeaponType type, int slot);
   public static event OnCollectWeapon WeaponCollect;
 
@@ -15,11 +20,6 @@ public class PlayerInventory : MonoBehaviour {
   public RangedWeapon shotgunPrefab;
 
   protected int _weaponsIndex = 0;
-
-  void Start() {
-    // TODO: Initialize with savefile contents
-    inventory = new Inventory(0, new WeaponType[2] { WeaponType.Unarmed, WeaponType.Unarmed });
-  }
 
   private void _HideShowWeapons(WeaponType activeWeapon) {
     RemoveWeapon();
@@ -47,20 +47,33 @@ public class PlayerInventory : MonoBehaviour {
     return (_weaponsIndex + 1) % inventory.weapons.Length;
   }
 
+  public void SetInventory(Inventory inventory) {
+    this.inventory = inventory;
+    InventoryChanged?.Invoke(inventory);
+  }
   public void AddCoinValue(int value) {
     inventory.coins = (inventory.coins + value) % Inventory.COINS_MAX;
-    HeadUpDisplay.instance.ModifyCoins(inventory.coins);
+    CoinCollect?.Invoke(inventory.coins);
+  }
+  // TODO: Param should be ManaCircuitInventory[] instead of int[]
+  public void AddManaCircuit(int[] ids) {
+    for (int i = 0; i < ids.Length; i++) {
+      inventory.manaCircuits[ids[i]].collected = true;
+      CircuitCollect?.Invoke(inventory.manaCircuits[ids[i]].collected, ids[i]);
+    }
   }
 
-  public void AddWeapon(WeaponType type) {
-    if (inventory.weapons[_weaponsIndex] == WeaponType.Unarmed || (inventory.weapons[_NextIndexWrap()] != WeaponType.Unarmed)) {
-      inventory.weapons[_weaponsIndex] = type;
-      _HideShowWeapons(type);
-      WeaponCollect?.Invoke(type, _weaponsIndex);
-    }
-    else {
-      inventory.weapons[_NextIndexWrap()] = type;
-      WeaponCollect?.Invoke(type, _NextIndexWrap());
+  public void AddWeapon(WeaponType[] weapons) {
+    for (int i = 0; i < weapons.Length; i++) {
+      if (inventory.weapons[_weaponsIndex] == WeaponType.Unarmed || (inventory.weapons[_NextIndexWrap()] != WeaponType.Unarmed)) {
+        inventory.weapons[_weaponsIndex] = weapons[i];
+        _HideShowWeapons(weapons[i]);
+        WeaponCollect?.Invoke(weapons[i], _weaponsIndex);
+      }
+      else {
+        inventory.weapons[_NextIndexWrap()] = weapons[i];
+        WeaponCollect?.Invoke(weapons[i], _NextIndexWrap());
+      }
     }
   }
 

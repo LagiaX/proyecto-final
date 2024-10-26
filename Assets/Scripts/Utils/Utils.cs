@@ -10,7 +10,7 @@ public static class Utils {
   }
 
   public static Health GetPlayerBaseHealth() {
-    return new Health(12, 0);
+    return new Health(16, 0);
   }
 
   public static StatsNpc GetNPCBaseStats() {

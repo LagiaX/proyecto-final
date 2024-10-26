@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AppConfig : MonoBehaviour {
+public class AppConfig : ScriptableObject {
   public static readonly string PlayerName = "Player";
 
   // SCENES
   public static readonly string TitleScreen = "Title_Screen";
-  public static readonly string[] Level = new string[] { "Level_1", "Level_2" };
+  public static readonly string[] Level = new string[] { "Level_1" };
   public static readonly string SceneTraining = "Testing_Grounds";
 
   // OPTIONS
@@ -40,6 +40,7 @@ public class AppConfig : MonoBehaviour {
   };
 
   // DAMAGE VALUES
+  public static readonly int EnemyContactDamage = 2;
   public static readonly int PoisonDamage = 1;
   public static readonly float PoisonTickRate = 2f;
   public static readonly int BurnDamage = 3;

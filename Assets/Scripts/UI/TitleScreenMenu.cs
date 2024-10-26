@@ -12,12 +12,21 @@ public class TitleScreenMenu : MonoBehaviour {
     //_animator.Play("Title");
   }
 
-  public void OnNewGame() {
-    GameManager.GoToLevel(1);
+  public async void OnNewGame() {
+    GameManager.resumingSavedGame = false;
+    SavefileManager.instance.InitSavefile();
+    GameManager.OnGamePause(false);
+    await GameManager.ChangeSceneAsync(AppConfig.Level[0]);
+    GameManager.LoadPlayerParameters();
   }
 
-  public void OnLoad() {
-    // TODO: Load savefile, then load corresponding scene
+  public async void OnLoad() {
+    if (SavefileManager.instance.LoadGame()) {
+      GameManager.resumingSavedGame = true;
+      GameManager.OnGamePause(false);
+      await GameManager.ChangeSceneAsync(SavefileManager.instance.savefile.systems.scene);
+      GameManager.LoadPlayerParameters();
+    }
   }
 
   public void OnTraining() {

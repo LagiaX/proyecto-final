@@ -2,11 +2,16 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 public class ActivateObject : MonoBehaviour {
+  public delegate void OnActivateObject(int id);
+  public static event OnActivateObject Activated;
 
   [Header("Activate on player trigger")]
   public GameObject[] gameobjects;
   public bool activateOnEnter = true;
   public bool activateOnExit = false;
+
+  [Header("Single activation")]
+  public int id;
   public bool activateOnce;
 
   private bool _isDestroying;
@@ -18,6 +23,7 @@ public class ActivateObject : MonoBehaviour {
         _ActivateAllObjects();
       }
       if (activateOnce) {
+        Activated?.Invoke(id);
         _DestroyPostTrigger();
       }
     }
@@ -30,6 +36,7 @@ public class ActivateObject : MonoBehaviour {
         _ActivateAllObjects();
       }
       if (activateOnce) {
+        Activated?.Invoke(id);
         _DestroyPostTrigger();
       }
     }

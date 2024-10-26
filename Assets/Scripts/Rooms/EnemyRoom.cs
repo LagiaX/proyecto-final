@@ -1,38 +1,50 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyRoom : MonoBehaviour, IActivatable {
+  public delegate void RoomResolved(int id);
+  public static event RoomResolved Resolved;
 
-  public bool roomClear;
+  public int id;
   public List<OrganicTarget> enemies = new List<OrganicTarget>();
   public RemoteDoor[] doors;
 
-  void Awake() {
-    if (roomClear) {
-      DestroyRoomLogic(3);
-    }
+  void OnEnable() {
     OrganicTarget.Dead += OnEnemyDead;
   }
 
-  void Update() {
-    if (roomClear) {
-      DestroyRoomLogic(3);
-      return;
+  void OnDisable() {
+    OrganicTarget.Dead -= OnEnemyDead;
+  }
+
+  public void SetRoomClear(bool isRoomClear) {
+    if (isRoomClear) {
+      int totalEnemies = enemies.Count;
+      for (int i = 0; i < totalEnemies; i++) {
+        enemies.ElementAt(0).OnDeath();
+      }
     }
-    CheckRoom();
   }
 
   public void CheckRoom() {
     if (enemies.Count == 0) {
-      roomClear = true;
-      for (int i = 0; i < doors.Length; i++) {
-        doors[i].OnActivate();
-      }
+      Debug.Log("Should activate doors");
+      ActivateDoors();
+      Resolved?.Invoke(id);
+      DestroyRoomLogic(3);
+    }
+  }
+
+  public void ActivateDoors() {
+    for (int i = 0; i < doors.Length; i++) {
+      doors[i].OnActivate();
     }
   }
 
   public void OnEnemyDead(OrganicTarget t) {
     enemies.Remove(t);
+    CheckRoom();
   }
 
   public void OnActivate() {

@@ -3,7 +3,7 @@ using UnityEngine;
 public class UserInterfaceManager : MonoBehaviour {
   public static UserInterfaceManager instance;
 
-  public Canvas pauseMenu;
+  public CanvasRenderer pauseMenu;
 
   private bool _isShowingPauseMenu;
 
@@ -15,9 +15,17 @@ public class UserInterfaceManager : MonoBehaviour {
     Destroy(gameObject);
   }
 
-  void Start() {
+  void OnEnable() {
     Controls.Pause += TogglePauseMenu;
     PauseMenu.Pause += TogglePauseMenu;
+  }
+
+  void OnDisable() {
+    Controls.Pause -= TogglePauseMenu;
+    PauseMenu.Pause -= TogglePauseMenu;
+  }
+
+  void Start() {
     TogglePauseMenu(false);
   }
 

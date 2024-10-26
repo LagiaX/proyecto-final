@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using static AppConfig;
 
 public class ButtonConfiguration : MonoBehaviour {
+  public delegate void OnControlChange(Control c);
+  public static event OnControlChange ControlChanged;
 
   public Dictionary<Control, TMP_Text> controls = new Dictionary<Control, TMP_Text>();
   public TMP_Text moveUp;
@@ -51,6 +53,7 @@ public class ButtonConfiguration : MonoBehaviour {
   private void _AssignKey(KeyCode keyCode) {
     KeyBindings[_currentControl] = keyCode;
     controls[_currentControl].text = keyCode.ToString();
+    ControlChanged?.Invoke(_currentControl);
   }
 
   private void _LoadSavedValues() {

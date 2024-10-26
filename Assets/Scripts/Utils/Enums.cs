@@ -8,6 +8,14 @@ public enum Ailment {
   Burned
 }
 
+public enum Powerup {
+  Health,
+  Speed,
+  Pistol,
+  Crossbow,
+  Shotgun
+}
+
 public enum EnemyType {
   Humanoid,
   Beast,

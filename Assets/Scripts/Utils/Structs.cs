@@ -1,7 +1,5 @@
 using System;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 
 [Serializable]
 public struct Health {
@@ -45,9 +43,9 @@ public struct StatsPlayer {
   public int movementSpeedBase;
   public int movementSpeedMax;
 
-  public StatsPlayer(string name, int movementSpeed, int movementSpeedMax) {
+  public StatsPlayer(string name, int movementSpeedBase, int movementSpeedMax) {
     this.name = name;
-    this.movementSpeedBase = movementSpeed;
+    this.movementSpeedBase = movementSpeedBase;
     this.movementSpeedMax = movementSpeedMax;
   }
 }
@@ -86,21 +84,34 @@ public struct StatsNpc {
 public struct Inventory {
   public int coins;
   public WeaponType[] weapons;
+  public ManaCircuitInventory[] manaCircuits;
 
   public const int COINS_MAX = 99;
 
-  public Inventory(int coins, WeaponType[] weapons) {
+  public Inventory(int coins, WeaponType[] weapons, ManaCircuitInventory[] manaCircuits) {
     this.coins = coins % COINS_MAX;
     this.weapons = weapons;
+    this.manaCircuits = manaCircuits;
+  }
+}
+
+[Serializable]
+public struct ManaCircuitInventory {
+  public int id;
+  public bool collected;
+
+  public ManaCircuitInventory(int id, bool collected) {
+    this.id = id;
+    this.collected = collected;
   }
 }
 
 public struct PistolStats {
-  public const int power = 1;
+  public const int power = 2;
   public const float shootingRange = 15f;
   public const float shootingSpeed = 15f;
   public const float shootingMoveSpeed = 0.7f;
-  public const float fireRate = 1f;
+  public const float fireRate = 1.2f;
 }
 
 public struct CrossbowStats {
@@ -130,16 +141,67 @@ public struct SaveFile {
 [Serializable]
 public struct Systems {
   public string scene;
-  public int savePoint;
+  public bool[] puzzleRooms;
+  public bool[] enemyRooms;
+  public bool[] coins;
+  public bool[] circuits;
+  public bool[] powerUps;
+  public bool[] triggers;
 }
 
 [Serializable]
 public struct Player {
-  public Profile profile;
-  public StatsPlayer stats;
+  public Health health;
   public Inventory inventory;
   public Vector3 position;
   public Vector3 rotation;
+}
+
+public struct LevelInfo {
+  public int level;
+  public int totalPuzzleRooms;
+  public int totalEnemyRooms;
+  public int totalCoins;
+  public int totalCircuits;
+  public int totalPowerUps;
+  public int totalTriggers;
+
+  public LevelInfo(int level, int puzzleRooms, int enemyRooms, int coins, int circuits, int powerups, int triggers) {
+    this.level = level;
+    totalPuzzleRooms = puzzleRooms;
+    totalEnemyRooms = enemyRooms;
+    totalCoins = coins;
+    totalCircuits = circuits;
+    totalPowerUps = powerups;
+    totalTriggers = triggers;
+  }
+}
+
+public struct CoinInfo {
+  public string name;
+  public Vector3 position;
+  public bool collected;
+
+  public CoinInfo(string name, Vector3 position, bool collected) {
+    this.name = name;
+    this.position = position;
+    this.collected = collected;
+  }
+}
+
+[Serializable]
+public struct PowerupInfo {
+  public string name;
+  public Powerup type;
+  public Vector3 position;
+  public bool collected;
+
+  public PowerupInfo(string name, Powerup type, Vector3 position, bool collected) {
+    this.name = name;
+    this.type = type;
+    this.position = position;
+    this.collected = collected;
+  }
 }
 
 [Serializable]

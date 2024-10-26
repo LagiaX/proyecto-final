@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
   public static GameManager instance;
   public static bool isPaused = false;
+  public static bool resumingSavedGame = false;
 
   public delegate void PauseGame(bool isPaused);
 
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour {
     Destroy(gameObject);
   }
 
-  public void OnPlayerDead(PlayerStats ps) {
+  public static void OnPlayerDead(PlayerStats ps) {
     PlayerSystems.instance.actions.enabled = false;
     PlayerSystems.instance.movement.enabled = false;
     ps.enabled = false;
@@ -29,11 +30,11 @@ public class GameManager : MonoBehaviour {
   }
 
   // TODO: This should be in OrganicTarget, not here
-  public async void OnNpcDeath(OrganicTarget ot) {
+  public static async void OnNpcDeath(OrganicTarget ot) {
     await GarbageManager.RemoveInTime(ot.gameObject, 2f);
   }
 
-  public void OnGamePause(bool _isPaused) {
+  public static void OnGamePause(bool _isPaused) {
     isPaused = _isPaused;
 
     if (isPaused) {
@@ -60,9 +61,44 @@ public class GameManager : MonoBehaviour {
     ChangeScene(AppConfig.TitleScreen);
   }
 
-  public async static void GoToLevel(int level) {
-    await ChangeSceneAsync(AppConfig.Level[level - 1]);
-    instance.OnGamePause(false);
+  public static void LoadPlayerParameters() {
+    //PlayerSystems player;
+    SaveFile sf = SavefileManager.instance.savefile;
+
+    // default values
+    Vector3 position = LevelManager.LevelStartingPoint;
+    Vector3 rotation = Vector3.zero;
+    Health health = Utils.GetPlayerBaseHealth();
+    int coins = 0;
+    ManaCircuitInventory[] manaCircuits = new ManaCircuitInventory[LevelManager.LevelInfo.totalCircuits];
+    for (int i = 0; i < LevelManager.LevelInfo.totalCircuits; i++) {
+      manaCircuits[i] = new ManaCircuitInventory(i, false);
+    }
+    WeaponType[] weapons = new WeaponType[2] { WeaponType.Unarmed, WeaponType.Unarmed };
+
+    // loaded values from savefile, if applicable
+    if (resumingSavedGame) {
+      position = sf.player.position;
+      rotation = sf.player.rotation;
+      health = sf.player.health;
+      coins = sf.player.inventory.coins;
+      for (int i = 0; i < sf.player.inventory.manaCircuits.Length; i++) {
+        if (sf.player.inventory.manaCircuits[i].collected) {
+          manaCircuits[i] = new ManaCircuitInventory(i, true);
+        }
+      }
+      weapons = sf.player.inventory.weapons;
+    }
+
+    Inventory inventory = new Inventory(coins, weapons, manaCircuits);
+
+    if (SpawnManager.instance.SpawnPlayer(position, rotation) != null) {
+      PlayerSystems.instance.stats.SetHealth(health);
+      PlayerSystems.instance.stats.InitStats();
+      PlayerSystems.instance.stats.InitBuffs();
+      PlayerSystems.instance.stats.InitStatusAilments();
+      PlayerSystems.instance.inventory.SetInventory(inventory);
+    }
   }
 
   public static void CloseGame() {

@@ -18,21 +18,63 @@ public class HeadUpDisplay : MonoBehaviour {
   [Header("Coins")]
   public TMP_Text coins;
 
+  [Header("Mana Circuits")]
+  public Image[] circuits;
+  public Sprite circuitObtained;
+  public Sprite circuitUnobtained;
+
+  [Header("Controls")]
+  public TMP_Text controls;
+
   private int _currentWeapon = 0;
   private int _currentHeartIcon;
 
   void Awake() {
     if (instance == null) {
       instance = this;
-      PlayerStats.PlayerAlive += InitHealth;
-      SpawnManager.PlayerRespawn += InitHealth;
-      PlayerStats.PlayerHealed += OnPlayerHeal;
-      PlayerStats.PlayerDamaged += OnPlayerDamage;
-      PlayerInventory.WeaponCollect += OnWeaponCollect;
-      PlayerInventory.WeaponChange += OnWeaponChange;
       return;
     }
     Destroy(gameObject);
+  }
+
+  void OnEnable() {
+    ButtonConfiguration.ControlChanged += _UpdateControls;
+    PlayerStats.PlayerAlive += InitHealth;
+    SpawnManager.PlayerRespawn += InitHealth;
+    PlayerStats.HealthChanged += OnHealthChange;
+    PlayerStats.PlayerHealed += OnPlayerHeal;
+    PlayerStats.PlayerDamaged += OnPlayerDamage;
+    PlayerInventory.InventoryChanged += OnInventoryChange;
+    PlayerInventory.CoinCollect += OnCoinCollect;
+    PlayerInventory.CircuitCollect += OnCircuitCollect;
+    PlayerInventory.WeaponCollect += OnWeaponCollect;
+    PlayerInventory.WeaponChange += OnWeaponChange;
+  }
+
+  void OnDisable() {
+    PlayerStats.PlayerAlive -= InitHealth;
+    SpawnManager.PlayerRespawn -= InitHealth;
+    PlayerStats.HealthChanged -= OnHealthChange;
+    PlayerStats.PlayerHealed -= OnPlayerHeal;
+    PlayerStats.PlayerDamaged -= OnPlayerDamage;
+    PlayerInventory.InventoryChanged -= OnInventoryChange;
+    PlayerInventory.CoinCollect -= OnCoinCollect;
+    PlayerInventory.CircuitCollect -= OnCircuitCollect;
+    PlayerInventory.WeaponCollect -= OnWeaponCollect;
+    PlayerInventory.WeaponChange -= OnWeaponChange;
+  }
+
+  void Start() {
+    _UpdateControls(AppConfig.Control.Jump);
+  }
+
+  private void _UpdateControls(AppConfig.Control c) {
+    string text = "Movement - WASD" +
+      "\nJump - " + AppConfig.KeyBindings[AppConfig.Control.Jump] +
+      "\nShoot - " + AppConfig.KeyBindings[AppConfig.Control.Shoot] +
+      "\nChange Weapon - " + AppConfig.KeyBindings[AppConfig.Control.ChangeWeapon] +
+      "\nLock On - " + AppConfig.KeyBindings[AppConfig.Control.LockTarget];
+    controls.text = text;
   }
 
   private void _UpdateHealthIndicator(int filledHearts, int heartParts) {
@@ -64,13 +106,33 @@ public class HeadUpDisplay : MonoBehaviour {
     _UpdateHealthIndicator(ps.health.healthCurrent / 4, ps.health.healthCurrent % 4);
   }
 
-  public void ModifyCoins(int value) {
+  public void OnHealthChange(Health h) {
+    _UpdateHealthIndicator(h.healthCurrent / 4, h.healthCurrent % 4);
+  }
+
+  public void OnInventoryChange(Inventory i) {
+    OnCoinCollect(i.coins);
+    for (int index = 0; index < i.manaCircuits.Length; index++) {
+      OnCircuitCollect(i.manaCircuits[index].collected, i.manaCircuits[index].id);
+    }
+    for (int index = 0; index < i.weapons.Length; index++) {
+      OnWeaponCollect(i.weapons[index], index);
+    }
+  }
+
+  public void OnCoinCollect(int value) {
     int digits = Inventory.COINS_MAX.ToString().Length;
     string adjustment = "";
     for (int i = 0; i < digits; i++) {
       adjustment += 0;
     }
     coins.text = string.Format("{0:" + adjustment + "}", value);
+  }
+
+  public void OnCircuitCollect(bool obtained, int id) {
+    // TODO: Mana circuits HUD indicators
+    Image icon = circuits[id];
+    icon.sprite = obtained ? circuitObtained : circuitUnobtained;
   }
 
   public void OnPlayerHeal(int healing) {

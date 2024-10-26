@@ -2,6 +2,7 @@ using UnityEngine;
 using static AppConfig;
 
 public class Controls : MonoBehaviour {
+  public static Controls instance;
   public delegate void OnMove(float h, float v);
   public static event OnMove Move;
   public delegate void OnMoveRelease();
@@ -20,6 +21,14 @@ public class Controls : MonoBehaviour {
   public static event GameManager.PauseGame Pause;
 
   private Vector3 _lastDirection;
+
+  void Awake() {
+    if (instance == null) {
+      instance = this;
+      return;
+    }
+    Destroy(gameObject);
+  }
 
   void Update() {
     _DetectInputs();

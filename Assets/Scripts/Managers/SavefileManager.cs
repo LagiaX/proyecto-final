@@ -1,24 +1,37 @@
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SavefileManager : MonoBehaviour {
   public static SavefileManager instance;
 
+  public delegate void OnSavefileLoad();
+  public static event OnSavefileLoad SavefileLoaded;
+  public delegate void NoSavefile();
+  public static event NoSavefile SavefileNotFound;
+
   public SaveFile savefile;
-  public PlayerSystems player;
   public bool isDebug = false;
 
   public readonly string savefileRoute = Directory.GetCurrentDirectory() + "/golden.sav";
 
   void OnEnable() {
     DebugManager.DebugMode += _DebugMode;
-    //PlayerSystems.Ready += _AssignPlayerSystems;
+    PuzzleRoom.Resolved += _AddPuzzleRoom;
+    EnemyRoom.Resolved += _AddEnemyRoom;
+    ManaCircuit.Collected += _AddManaCircuit;
+    PowerUp.Collected += _AddPowerUp;
+    ActivateObject.Activated += _AddTrigger;
   }
 
   void OnDisable() {
     DebugManager.DebugMode -= _DebugMode;
-    //PlayerSystems.Ready -= _AssignPlayerSystems;
+    PuzzleRoom.Resolved -= _AddPuzzleRoom;
+    EnemyRoom.Resolved -= _AddEnemyRoom;
+    ManaCircuit.Collected -= _AddManaCircuit;
+    PowerUp.Collected -= _AddPowerUp;
+    ActivateObject.Activated -= _AddTrigger;
   }
 
   void Awake() {
@@ -40,11 +53,6 @@ public class SavefileManager : MonoBehaviour {
     isDebug = option;
   }
 
-  // For the future would be cool to have this functionality
-  //private void _AssignPlayerSystems() {
-  //  player = PlayerSystems.instance;
-  //}
-
   private void _Controls() {
     if (Input.GetKeyDown(KeyCode.C)) {
       SaveGame();
@@ -54,39 +62,64 @@ public class SavefileManager : MonoBehaviour {
     }
   }
 
-  public void SaveGame() {
-    print("Save game");
+  private void _AddPuzzleRoom(int id) {
+    savefile.systems.puzzleRooms[id] = true;
+  }
+
+  private void _AddEnemyRoom(int id) {
+    savefile.systems.enemyRooms[id] = true;
+  }
+
+  private async Task _AddCoinsCollected() {
+    for (int i = 0; i < savefile.systems.coins.Length; i++) {
+      savefile.systems.coins[i] = CoinManager.instance.coinInfo[i].collected;
+      await Task.Yield();
+    }
+  }
+
+  private void _AddManaCircuit(int id) {
+    savefile.systems.circuits[id] = true;
+  }
+
+  private void _AddPowerUp(int id) {
+    savefile.systems.powerUps[id] = true;
+  }
+
+  private void _AddTrigger(int id) {
+    savefile.systems.triggers[id] = true;
+  }
+
+  public void InitSavefile() {
+    // default values
+    savefile.systems.puzzleRooms = new bool[LevelManager.LevelInfo.totalPuzzleRooms];
+    savefile.systems.enemyRooms = new bool[LevelManager.LevelInfo.totalEnemyRooms];
+    savefile.systems.coins = new bool[LevelManager.LevelInfo.totalCoins];
+    savefile.systems.circuits = new bool[LevelManager.LevelInfo.totalCircuits];
+    savefile.systems.powerUps = new bool[LevelManager.LevelInfo.totalPowerUps];
+    savefile.systems.triggers = new bool[LevelManager.LevelInfo.totalTriggers];
+  }
+
+  public async void SaveGame() {
+    print("Save game: ");
+    PlayerSystems player = PlayerSystems.instance;
     savefile.systems.scene = SceneManager.GetActiveScene().name;
-    // TODO: Savepoints
-    // savefile.systems.savePoint = 
+    await _AddCoinsCollected();
+    savefile.player.health = player.stats.health;
+    savefile.player.inventory = player.inventory.inventory;
     savefile.player.position = player.transform.position;
     savefile.player.rotation = player.transform.eulerAngles;
-    savefile.player.profile.name = player.name;
-    savefile.player.stats = player.stats.stats;
-    savefile.player.inventory = player.inventory.inventory;
     File.WriteAllText(savefileRoute, JsonUtility.ToJson(savefile, true));
   }
 
-  public async void LoadGame() {
+  public bool LoadGame() {
     print("Load game");
-
     if (!File.Exists(savefileRoute)) {
-      print("No save file D=");
-      return;
+      SavefileNotFound?.Invoke();
+      return false;
     }
 
     savefile = JsonUtility.FromJson<SaveFile>(File.ReadAllText(savefileRoute));
-    // Load scene
-    await GameManager.ChangeSceneAsync(savefile.systems.scene);
-    // Load character
-    LoadPlayer();
-  }
-
-  public void LoadPlayer() {
-    player.stats.stats = savefile.player.stats;
-    player.inventory.inventory = savefile.player.inventory;
-    player.transform.position = savefile.player.position;
-    player.transform.eulerAngles = savefile.player.rotation;
-    //player.stats.health.ModifyMissingHealth(0);
+    SavefileLoaded?.Invoke();
+    return true;
   }
 }

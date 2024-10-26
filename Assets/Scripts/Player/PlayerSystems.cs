@@ -39,9 +39,5 @@ public class PlayerSystems : MonoBehaviour {
 
   void Start() {
     Ready?.Invoke();
-    SavefileManager sm = FindAnyObjectByType<SavefileManager>();
-    if (sm != null) {
-      sm.player = this;
-    }
   }
 }

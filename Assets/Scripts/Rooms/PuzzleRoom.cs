@@ -1,29 +1,28 @@
 using UnityEngine;
 
 public class PuzzleRoom : MonoBehaviour {
+  public delegate void RoomResolved(int id);
+  public static event RoomResolved Resolved;
+
+  public int id;
   public bool roomClear;
   public RemoteDoor door;
   public MatchPattern matchPattern;
 
-  void Awake() {
-    if (roomClear) {
-      DestroyRoomLogic(3);
-      return;
-    }
+  void OnEnable() {
     matchPattern.PuzzleSolved += OnPuzzleSolved;
   }
 
-  void Update() {
-    if (roomClear) {
-      DestroyRoomLogic(3);
-      return;
-    }
+  void OnDisable() {
+    matchPattern.PuzzleSolved -= OnPuzzleSolved;
   }
 
   public void OnPuzzleSolved(bool isSolved) {
     roomClear = isSolved;
     if (roomClear) {
       door.OnActivate();
+      Resolved?.Invoke(id);
+      DestroyRoomLogic(3);
     }
   }
 

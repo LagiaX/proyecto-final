@@ -35,11 +35,6 @@ public class SpawnManager : MonoBehaviour {
     DebugManager.DebugMode -= _DebugMode;
   }
 
-  void Start() {
-    // TODO: This should be in GameManager
-    Spawn(SpawnType.Player, player, checkpoints[startingPoint].transform.position);
-  }
-
   void Update() {
     // for testing
     if (isDebug) {
@@ -60,10 +55,6 @@ public class SpawnManager : MonoBehaviour {
   public GameObject Spawn(SpawnType type, GameObject g, Vector3 position) {
     GameObject instance = Instantiate(g, position, Quaternion.identity);
     switch (type) {
-      case SpawnType.Player:
-        instance.name = AppConfig.PlayerName;
-        PlayerSpawn?.Invoke(PlayerSystems.instance.stats);
-        break;
       case SpawnType.Enemy:
         instance.name = "Enemy";
         break;
@@ -74,6 +65,14 @@ public class SpawnManager : MonoBehaviour {
         instance.name = "Object";
         break;
     }
+    return instance;
+  }
+
+  public GameObject SpawnPlayer(Vector3 position, Vector3 rotation) {
+    GameObject instance = Instantiate(player, position, Quaternion.identity);
+    instance.name = AppConfig.PlayerName;
+    instance.transform.eulerAngles = rotation;
+    PlayerSpawn?.Invoke(PlayerSystems.instance.stats);
     return instance;
   }
 

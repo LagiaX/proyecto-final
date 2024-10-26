@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour {
   public new Rigidbody rigidbody;
 
   private Transform _target;
+  private float _knockbackTimer;
 
   void OnEnable() {
     PlayerActions.ActionLock += _OnTargetLock;
@@ -30,6 +31,10 @@ public class PlayerMovement : MonoBehaviour {
   }
 
   void Update() {
+    if (_knockbackTimer > 0) {
+      _knockbackTimer -= Time.deltaTime;
+      return;
+    }
     if (_target != null) {
       transform.LookAt(_target.transform);
       PlayerSystems.instance.weaponSlot.transform.forward = _target.transform.position - transform.position;
@@ -81,5 +86,10 @@ public class PlayerMovement : MonoBehaviour {
     if (velocity.y > 0) {
       velocity.y /= 2f;
     }
+  }
+
+  public void Knockback(Vector3 velocity, float time) {
+    rigidbody.velocity = velocity;
+    _knockbackTimer = time;
   }
 }

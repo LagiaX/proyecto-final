@@ -8,10 +8,12 @@ public class PlayerStats : OrganicTarget {
   public delegate void IsPlayerDead(PlayerStats ps);
   public static event IsPlayerDead PlayerDead;
 
-  public delegate void isPlayerHealed(int healing);
-  public static event isPlayerHealed PlayerHealed;
-  public delegate void isPlayerDamaged(int healing);
-  public static event isPlayerDamaged PlayerDamaged;
+  public delegate void OnHealthChange(Health h);
+  public static event OnHealthChange HealthChanged;
+  public delegate void OnPlayerHeal(int healing);
+  public static event OnPlayerHeal PlayerHealed;
+  public delegate void OnPlayerDamage(int healing);
+  public static event OnPlayerDamage PlayerDamaged;
 
   public StatsPlayer stats;
   public float[] buffDuration;
@@ -22,9 +24,6 @@ public class PlayerStats : OrganicTarget {
   private float speedMod = 1f;
 
   protected override void Start() {
-    InitStats();
-    InitBuffs();
-    InitStatusAilments();
     PlayerAlive?.Invoke(this);
   }
 
@@ -84,8 +83,12 @@ public class PlayerStats : OrganicTarget {
     return stats.movementSpeedBase * speedMod;
   }
 
+  public void SetHealth(Health health) {
+    this.health = health;
+    HealthChanged?.Invoke(health);
+  }
+
   public void InitStats() {
-    health = Utils.GetPlayerBaseHealth();
     stats = Utils.GetPlayerBaseStats();
   }
 

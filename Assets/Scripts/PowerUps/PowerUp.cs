@@ -1,7 +1,11 @@
 using UnityEngine;
 
 public class PowerUp : Item {
+  public delegate void PowerupCollected(int id);
+  public static event PowerupCollected Collected;
+
   [Header("Properties")]
+  public int id;
   public bool destroyOnCollect;
 
   public void OnTriggerEnter(Collider other) {
@@ -11,7 +15,9 @@ public class PowerUp : Item {
   }
 
   public override void OnCollect(OrganicTarget collector) {
-    if (destroyOnCollect)
+    if (destroyOnCollect) {
+      Collected?.Invoke(id);
       Remove();
+    }
   }
 }

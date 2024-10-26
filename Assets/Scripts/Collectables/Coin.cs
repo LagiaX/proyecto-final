@@ -2,6 +2,8 @@
 using UnityEngine;
 
 public class Coin : Item {
+  public delegate void CoinCollect(GameObject g);
+  public static event CoinCollect Collected;
 
   public int value = 1;
 
@@ -14,6 +16,7 @@ public class Coin : Item {
   public override void OnCollect(OrganicTarget collector) {
     if (collector.TryGetComponent(out PlayerInventory inventory)) {
       inventory.AddCoinValue(value);
+      Collected?.Invoke(gameObject);
       Remove();
     }
   }
