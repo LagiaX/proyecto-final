@@ -77,7 +77,9 @@ public class SpawnManager : MonoBehaviour {
   }
 
   public void Respawn() {
+    PlayerSystems.instance.stats.SetHealth(Utils.GetPlayerBaseHealth());
     PlayerSystems.instance.stats.InitStats();
+    PlayerSystems.instance.stats.InitBuffs();
     PlayerSystems.instance.stats.InitStatusAilments();
     PlayerSystems.instance.stats.enabled = true;
     PlayerSystems.instance.actions.enabled = true;

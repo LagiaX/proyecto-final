@@ -1,27 +1,151 @@
 {
     "systems": {
-        "scene": 1,
-        "savePoint": 0
+        "scene": "Level_1",
+        "puzzleRooms": [
+            true,
+            false
+        ],
+        "enemyRooms": [
+            false
+        ],
+        "coins": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "circuits": [
+            false,
+            false,
+            true
+        ],
+        "powerUps": [
+            true,
+            true,
+            false,
+            false,
+            false
+        ],
+        "triggers": [
+            false
+        ]
     },
     "player": {
-        "profile": {
-            "name": "Player(Clone)"
+        "health": {
+            "healthMax": 16,
+            "healthMissing": 9
         },
-        "stats": {
-            "name": "character",
-            "movementSpeedBase": 5,
-            "movementSpeedModifier": 1.0,
-            "movementSpeedMax": 20
+        "inventory": {
+            "coins": 81,
+            "weapons": [
+                0,
+                3
+            ],
+            "manaCircuits": [
+                {
+                    "id": 0,
+                    "collected": false
+                },
+                {
+                    "id": 1,
+                    "collected": false
+                },
+                {
+                    "id": 2,
+                    "collected": true
+                }
+            ]
         },
         "position": {
-            "x": 1.1127910614013672,
-            "y": 1.5,
-            "z": -34.33122253417969
+            "x": -1.8338924646377564,
+            "y": 6.5,
+            "z": 172.03659057617188
         },
         "rotation": {
-            "x": -3.2016512818699996e-7,
-            "y": 180.00442504882813,
-            "z": 1.439412061765566e-10
+            "x": -8.029440200581202e-43,
+            "y": 65.51873779296875,
+            "z": 1.6114932339735397e-43
         }
     }
 }

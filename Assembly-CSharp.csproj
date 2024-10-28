@@ -67,7 +67,9 @@
     <Compile Include="Assets\Scripts\Utils\DontDestroyOnLoad.cs" />
     <Compile Include="Assets\Scripts\UI\TitleScreenMenu.cs" />
     <Compile Include="Assets\Scripts\Platforms\RemoteDoor.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\PowerupManager.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpWeapon.cs" />
+    <Compile Include="Assets\Scripts\Collectables\ManaCircuit.cs" />
     <Compile Include="Assets\Scripts\Utils\Interfaces.cs" />
     <Compile Include="Assets\Scripts\Player\LockOnRange.cs" />
     <Compile Include="Assets\Scripts\NPC\EnemyStats.cs" />
@@ -80,7 +82,10 @@
     <Compile Include="Assets\Scripts\Puzzles\MatchPattern.cs" />
     <Compile Include="Assets\Scripts\Utils\Enums.cs" />
     <Compile Include="Assets\Scripts\Cross\LevelPresentation.cs" />
+    <Compile Include="Assets\Scripts\Managers\LevelManager.cs" />
+    <Compile Include="Assets\Scripts\UI\SavePointIndicator.cs" />
     <Compile Include="Assets\Scripts\AbstractClasses\Item.cs" />
+    <Compile Include="Assets\Scripts\Collectables\CoinManager.cs" />
     <Compile Include="Assets\Scripts\AbstractClasses\Weapon.cs" />
     <Compile Include="Assets\Scripts\Objects\LiftableObject.cs" />
     <Compile Include="Assets\Scripts\Config\Controls.cs" />
@@ -96,7 +101,9 @@
     <Compile Include="Assets\Scripts\UI\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\NPC\DetectionRange.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerGravity.cs" />
+    <Compile Include="Assets\Scripts\NPC\ContactDamage.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSystems.cs" />
     <Compile Include="Assets\Scripts\Managers\SavefileManager.cs" />
     <Compile Include="Assets\Scripts\Config\ModalButtonConfigWarning.cs" />
@@ -105,7 +112,9 @@
     <Compile Include="Assets\Scripts\Player\PlayerRay.cs" />
     <Compile Include="Assets\Scripts\Cross\ActivateObject.cs" />
     <Compile Include="Assets\Scripts\Hazards\SpikesFloor.cs" />
+    <Compile Include="Assets\Scripts\UI\GoToTitleScreen.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUp.cs" />
+    <Compile Include="Assets\Scripts\Objects\SavePoint.cs" />
     <Compile Include="Assets\Scripts\Hazards\PoisonFloor.cs" />
     <Compile Include="Assets\Scripts\NPC\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
@@ -119,6 +128,7 @@
     <Compile Include="Assets\Scripts\PowerUps\PowerUpHealth.cs" />
     <Compile Include="Assets\Scripts\Config\AppConfig.cs" />
     <Compile Include="Assets\Scripts\PowerUps\PowerUpSpeed.cs" />
+    <Compile Include="Assets\Scripts\Collectables\ManaCircuitManager.cs" />
     <Compile Include="Assets\Scripts\Rooms\EnemyRoom.cs" />
     <Compile Include="Assets\Scripts\Hazards\PitCheckpoint.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollowingPlayer.cs" />

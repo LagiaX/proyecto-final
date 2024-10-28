@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour {
 
   public PuzzleRoom[] puzzleRooms;
   public EnemyRoom[] enemyRooms;
+  public ActivateObject[] triggers;
 
   void Awake() {
     if (instance == null) {
@@ -25,6 +26,9 @@ public class LevelManager : MonoBehaviour {
       }
       for (int i = 0; i < enemyRooms.Length; i++) {
         enemyRooms[i].SetRoomClear(SavefileManager.instance.savefile.systems.enemyRooms[i]);
+      }
+      for (int i = 0; i < triggers.Length; i++) {
+        triggers[i].gameObject.SetActive(!SavefileManager.instance.savefile.systems.triggers[i]);
       }
     }
     await InitializeCoins();

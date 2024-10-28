@@ -21,6 +21,7 @@ public class Controls : MonoBehaviour {
   public static event GameManager.PauseGame Pause;
 
   private Vector3 _lastDirection;
+  private bool _isInteracting;
 
   void Awake() {
     if (instance == null) {
@@ -30,8 +31,26 @@ public class Controls : MonoBehaviour {
     Destroy(gameObject);
   }
 
+  void OnEnable() {
+    SavePoint.SavePointEntered += _InteractControls;
+    SavePoint.SavePointExited += _ShootingControls;
+  }
+
+  void OnDisable() {
+    SavePoint.SavePointEntered -= _InteractControls;
+    SavePoint.SavePointExited -= _ShootingControls;
+  }
+
   void Update() {
     _DetectInputs();
+  }
+
+  private void _InteractControls() {
+    _isInteracting = true;
+  }
+
+  private void _ShootingControls() {
+    _isInteracting = false;
   }
 
   private void _DetectInputs() {
@@ -62,7 +81,7 @@ public class Controls : MonoBehaviour {
       Jump?.Invoke();
     if (Input.GetKeyUp(KeyBindings[Control.Jump]))
       JumpRelease?.Invoke();
-    if (Input.GetKeyDown(KeyBindings[Control.Shoot]))
+    if (Input.GetKeyDown(KeyBindings[Control.Shoot]) && !_isInteracting)
       Shoot?.Invoke();
     if (Input.GetKeyDown(KeyBindings[Control.ChangeWeapon]))
       ChangeWeapon?.Invoke();

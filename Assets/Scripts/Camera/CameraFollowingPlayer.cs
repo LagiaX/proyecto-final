@@ -7,6 +7,7 @@ public class CameraFollowingPlayer : MonoBehaviour {
   public float speed;
   public Vector3 offset;
   public bool stopFollowing;
+  public bool allowCameraCollision;
 
   void Awake() {
     if (instance == null) {
@@ -42,7 +43,9 @@ public class CameraFollowingPlayer : MonoBehaviour {
     if (player == null || stopFollowing) return;
     transform.position = Vector3.Lerp(transform.position, player.position + offset, speed * Time.deltaTime);
     transform.forward = Vector3.Slerp(transform.forward, player.transform.position - transform.position, speed * Time.deltaTime);
-    _CollisionChecker();
+    if (allowCameraCollision) {
+      _CollisionChecker();
+    }
   }
 
   private void _CollisionChecker() {
