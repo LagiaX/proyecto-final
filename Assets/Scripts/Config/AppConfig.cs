@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class AppConfig : ScriptableObject {
@@ -10,8 +11,10 @@ public class AppConfig : ScriptableObject {
   public static readonly string SceneTraining = "Testing_Grounds";
 
   // OPTIONS
+  public static readonly string ConfigRoute = Directory.GetCurrentDirectory() + "/golden.cfg";
   public static readonly float DefaultBGMVol = 0.5f;
   public static readonly float DefaultSFXVol = 0.5f;
+  public static SoundSettings SoundSettings;
 
   // HUD
   public static readonly int SpaceBetweenHeartIcons = 20; // in pixels
@@ -47,4 +50,10 @@ public class AppConfig : ScriptableObject {
   public static readonly float BurnTickRate = 1f;
   public static readonly int PitDamage = 3;
   public static readonly int SpikesDamage = 4;
+
+  // SCORING
+  public static readonly int coinBonus = 100;
+  public static readonly int enemyBonus = 750;
+  public static readonly int circuitBonus = 1500;
+  public static readonly int healthBonus = 500;
 }

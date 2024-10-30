@@ -141,6 +141,7 @@ public struct SaveFile {
 [Serializable]
 public struct Systems {
   public string scene;
+  public int enemiesDefeated;
   public bool[] puzzleRooms;
   public bool[] enemyRooms;
   public bool[] coins;
@@ -212,13 +213,21 @@ public struct Profile {
 [Serializable]
 public struct SavedConfig {
   public SoundSettings soundSettings;
+  public ButtonSettings buttonSettings;
 }
 
 [Serializable]
 public struct SoundSettings {
   public float bgmVolume;
   public float sfxVolume;
-  public AudioSpeakerMode speakerMode;
+}
+
+[Serializable]
+public struct ButtonSettings {
+  public int jump;
+  public int shoot;
+  public int changeWeapon;
+  public int lockTarget;
 }
 
 public struct Shortcuts {

@@ -29,7 +29,6 @@ public class Proyectile : MonoBehaviour, IShootable {
   }
 
   public void OnImpact(float speed) {
-    print("BANG with " + power + " power and " + speed + " speed");
     // TODO: print decal depending on collided surface
   }
 

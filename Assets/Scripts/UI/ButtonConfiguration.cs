@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using static AppConfig;
 
 public class ButtonConfiguration : MonoBehaviour {

@@ -22,11 +22,7 @@ public class CameraFollowingPlayer : MonoBehaviour {
     Destroy(gameObject);
   }
 
-  void Start() {
-    transform.position = player.position + offset;
-  }
-
-  void LateUpdate() {
+  void FixedUpdate() {
     _UpdateCamera();
   }
 
@@ -50,9 +46,10 @@ public class CameraFollowingPlayer : MonoBehaviour {
 
   private void _CollisionChecker() {
     RaycastHit data;
-    Debug.DrawRay(player.position, transform.position - player.transform.position);
-    if (Physics.Raycast(player.position, transform.position - player.transform.position, out data)) {
-      transform.position = Vector3.Lerp(transform.position, data.point, speed * Time.deltaTime);
+    Vector3 lineBetween = transform.position - player.transform.position;
+    Debug.DrawRay(player.position, lineBetween);
+    if (Physics.Raycast(player.position, lineBetween, out data)) {
+      transform.position = Vector3.Lerp(transform.position, player.transform.position, speed * Time.deltaTime);
     }
   }
 

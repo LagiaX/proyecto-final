@@ -7,19 +7,35 @@ public class GameManager : MonoBehaviour {
   public static GameManager instance;
   public static bool isPaused = false;
   public static bool resumingSavedGame = false;
+  public static bool ShowCursor {
+    get { return _showCursor; }
+    set {
+      Cursor.visible = _showCursor = value;
+    }
+  }
 
   public delegate void PauseGame(bool isPaused);
+
+  public static int enemiesDefeated;
+
+  private static bool _showCursor;
 
   void Awake() {
     if (instance == null) {
       instance = this;
       OrganicTarget.Dead += OnNpcDeath;
+      OrganicTarget.Dead += OnEnemyDeath;
       PlayerStats.PlayerDead += OnPlayerDead;
       Controls.Pause += OnGamePause;
       PauseMenu.Pause += OnGamePause;
+      TreasureRoom.Pause += OnGamePause;
       return;
     }
     Destroy(gameObject);
+  }
+
+  void Start() {
+    ShowCursor = true;
   }
 
   public static void OnPlayerDead(PlayerStats ps) {
@@ -27,6 +43,11 @@ public class GameManager : MonoBehaviour {
     PlayerSystems.instance.movement.enabled = false;
     ps.enabled = false;
     Utils.DelayFor(() => SpawnManager.instance.Respawn(), TimeSpan.FromSeconds(2f));
+  }
+
+  public static void OnEnemyDeath(OrganicTarget ot) {
+    ot.enabled = false;
+    enemiesDefeated++;
   }
 
   // TODO: This should be in OrganicTarget, not here
@@ -38,9 +59,11 @@ public class GameManager : MonoBehaviour {
     isPaused = _isPaused;
 
     if (isPaused) {
+      ShowCursor = true;
       Time.timeScale = 0;
     }
     else {
+      ShowCursor = false;
       Time.timeScale = 1f;
     }
   }
@@ -48,7 +71,6 @@ public class GameManager : MonoBehaviour {
   public static async Task ChangeSceneAsync(string name) {
     AsyncOperation op = SceneManager.LoadSceneAsync(name);
     while (!op.isDone) {
-      print(op.progress);
       await Task.Yield();
     }
   }
@@ -58,11 +80,12 @@ public class GameManager : MonoBehaviour {
   }
 
   public static void GoToTitleScreen() {
+    ShowCursor = true;
     ChangeScene(AppConfig.TitleScreen);
   }
 
   public static void LoadPlayerParameters() {
-    //PlayerSystems player;
+    enemiesDefeated = 0;
     SaveFile sf = SavefileManager.instance.savefile;
 
     // default values

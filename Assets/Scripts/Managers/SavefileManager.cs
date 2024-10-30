@@ -100,9 +100,9 @@ public class SavefileManager : MonoBehaviour {
   }
 
   public async void SaveGame() {
-    print("Save game: ");
     PlayerSystems player = PlayerSystems.instance;
     savefile.systems.scene = SceneManager.GetActiveScene().name;
+    savefile.systems.enemiesDefeated = GameManager.enemiesDefeated;
     await _AddCoinsCollected();
     savefile.player.health = player.stats.health;
     savefile.player.inventory = player.inventory.inventory;
@@ -112,7 +112,6 @@ public class SavefileManager : MonoBehaviour {
   }
 
   public bool LoadGame() {
-    print("Load game");
     if (!File.Exists(savefileRoute)) {
       SavefileNotFound?.Invoke();
       return false;

@@ -9,6 +9,7 @@ public class TitleScreenMenu : MonoBehaviour {
   }
 
   void Start() {
+    GameManager.ShowCursor = true;
     //_animator.Play("Title");
   }
 

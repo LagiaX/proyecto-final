@@ -29,7 +29,6 @@ public class EnemyRoom : MonoBehaviour, IActivatable {
 
   public void CheckRoom() {
     if (enemies.Count == 0) {
-      Debug.Log("Should activate doors");
       ActivateDoors();
       Resolved?.Invoke(id);
       DestroyRoomLogic(3);
