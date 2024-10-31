@@ -12,7 +12,7 @@ public abstract class OrganicTarget : Target, IDamageable {
 
   private new Renderer renderer;
   private Color matColor;
-  private Color dmgColor = Color.red;
+  private Color dmgColor = Color.white;
 
   protected virtual void Awake() {
     if (!TryGetComponent(out Renderer r)) {

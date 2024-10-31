@@ -5,10 +5,12 @@ public class RemoteDoor : MonoBehaviour, IActivatable {
 
   public Vector3[] positions;
   public float movementSpeed;
+  public AudioSource doorMovingSFX;
 
   private int _currentPosition = 0;
 
   private async void _MoveDoor() {
+    doorMovingSFX.Play();
     while (Vector3.Distance(transform.localPosition, positions[_currentPosition]) > 0.01f) {
       Vector3 position = transform.localPosition;
       float scaler = Time.deltaTime;
@@ -21,6 +23,7 @@ public class RemoteDoor : MonoBehaviour, IActivatable {
       });
       transform.localPosition = position;
     }
+    doorMovingSFX.Stop();
   }
 
   public void OnActivate() {

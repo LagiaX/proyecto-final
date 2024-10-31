@@ -19,6 +19,9 @@ public class PlayerStats : OrganicTarget {
   public float[] buffDuration;
   public float[] ailmentDuration;
 
+  public AudioSource damageSFX;
+  public AudioSource poisonDamageSFX;
+
   private float poisonTickTimer = AppConfig.PoisonTickRate;
   private float attackMod = 1f;
   private float speedMod = 1f;
@@ -51,7 +54,7 @@ public class PlayerStats : OrganicTarget {
         OnDamage(AppConfig.BurnDamage);
         break;
       case Ailment.Poisoned:
-        OnDamage(AppConfig.PoisonDamage);
+        OnPoisonDamage(AppConfig.PoisonDamage);
         break;
     }
   }
@@ -103,6 +106,13 @@ public class PlayerStats : OrganicTarget {
   public override void OnDamage(int damage) {
     base.OnDamage(damage);
     PlayerDamaged?.Invoke(damage);
+    damageSFX.Play();
+  }
+
+  public override void OnPoisonDamage(int damage) {
+    base.OnDamage(damage);
+    PlayerDamaged?.Invoke(damage);
+    poisonDamageSFX.Play();
   }
 
   public void OnRestoreHealth(int healing) {

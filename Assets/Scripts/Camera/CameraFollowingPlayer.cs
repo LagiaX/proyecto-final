@@ -46,10 +46,11 @@ public class CameraFollowingPlayer : MonoBehaviour {
 
   private void _CollisionChecker() {
     RaycastHit data;
-    Vector3 lineBetween = transform.position - player.transform.position;
-    Debug.DrawRay(player.position, lineBetween);
-    if (Physics.Raycast(player.position, lineBetween, out data)) {
-      transform.position = Vector3.Lerp(transform.position, player.transform.position, speed * Time.deltaTime);
+    Vector3 linePlayerCamera = transform.position - player.transform.position;
+    Debug.DrawRay(player.position, linePlayerCamera);
+    if (Physics.Raycast(player.position, linePlayerCamera, out data)) {
+      Vector3 correctedPosition = Vector3.Lerp(player.transform.position, data.point, 0.95f);
+      transform.position = Vector3.Lerp(transform.position, correctedPosition, speed * Time.deltaTime);
     }
   }
 

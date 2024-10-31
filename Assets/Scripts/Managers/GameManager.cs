@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour {
     if (resumingSavedGame) {
       position = sf.player.position;
       rotation = sf.player.rotation;
+      enemiesDefeated = sf.systems.enemiesDefeated;
       health = sf.player.health;
       coins = sf.player.inventory.coins;
       for (int i = 0; i < sf.player.inventory.manaCircuits.Length; i++) {

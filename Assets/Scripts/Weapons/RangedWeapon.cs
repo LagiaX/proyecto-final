@@ -8,6 +8,7 @@ public class RangedWeapon : Weapon {
   [Header("Ammo")]
   public Proyectile proyectilePrefab;
   public Transform shootingPoint;
+  public AudioSource shootSFX;
 
   protected bool isBoltReady = false;
   protected float _fireDelay;
@@ -77,6 +78,7 @@ public class RangedWeapon : Weapon {
       else {
         _lastFiredProyectile.GetComponent<Collider>().enabled = true;
       }
+      shootSFX.Play();
       _lastFiredProyectile.gameObject.transform.SetParent(null);
       _lastFiredProyectile?.OnShoot(0);
       isBoltReady = false;

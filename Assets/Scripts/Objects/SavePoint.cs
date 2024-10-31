@@ -7,23 +7,28 @@ public class SavePoint : MonoBehaviour {
   public delegate void OnSavePointExit();
   public static event OnSavePointExit SavePointExited;
 
-  public void OnTriggerEnter(Collider other) {
-    if (other.gameObject.TryGetComponent(out PlayerStats p)) {
-      SavePointEntered?.Invoke();
+  public AudioSource gameSavedSFX;
+
+  private bool _isPlayerClose;
+
+  void Update() {
+    if (_isPlayerClose && Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.Control.Shoot])) {
+      SavefileManager.instance.SaveGame();
+      gameSavedSFX.Play();
     }
   }
 
-  public void OnTriggerStay(Collider other) {
+  public void OnTriggerEnter(Collider other) {
     if (other.gameObject.TryGetComponent(out PlayerStats p)) {
-      if (Input.GetKeyDown(AppConfig.KeyBindings[AppConfig.Control.Shoot])) {
-        SavefileManager.instance.SaveGame();
-      }
+      SavePointEntered?.Invoke();
+      _isPlayerClose = true;
     }
   }
 
   public void OnTriggerExit(Collider other) {
     if (other.gameObject.TryGetComponent(out PlayerStats p)) {
       SavePointExited?.Invoke();
+      _isPlayerClose = false;
     }
   }
 }

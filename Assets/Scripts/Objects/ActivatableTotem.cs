@@ -10,6 +10,7 @@ public class ActivatableTotem : MonoBehaviour, IActivatable {
   public float maxTime;
   public float inc;
   public new Renderer renderer;
+  public AudioSource activationSFX;
 
   private Material _material;
 
@@ -20,6 +21,7 @@ public class ActivatableTotem : MonoBehaviour, IActivatable {
 
   public void OnActivate() {
     _material.SetColor(Shortcuts.Emission, finalColor);
+    activationSFX.Play();
   }
 
   public void Deactivate() {
